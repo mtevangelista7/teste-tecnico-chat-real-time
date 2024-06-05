@@ -1,9 +1,25 @@
 ﻿@inherits LayoutComponentBase
 
-@Body
+<MudThemeProvider IsDarkMode="true" Theme="_customTheme"/>
+<MudDialogProvider @rendermode="RenderMode.InteractiveWebAssembly"/>
+<MudSnackbarProvider @rendermode="RenderMode.InteractiveWebAssembly"/>
 
-<div id="blazor-error-ui">
-    An unhandled error has occurred.
-    <a href="" class="reload">Reload</a>
-    <a class="dismiss">🗙</a>
-</div>
+<MudLayout>
+    @Body
+</MudLayout>
+
+@code {
+
+    readonly MudTheme _customTheme = new()
+    {
+        Palette = new PaletteDark()
+        {
+            Primary = "#7289DA", // Discord's primary color
+            Secondary = "#99AAB5",
+            Tertiary = "#FFFFFF", // Discord's tertiary color
+            Dark = "#2C2F33",
+            DarkDarken = "#23272A"
+        },
+    };
+
+}

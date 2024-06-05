@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TesteTecnicoDiscord.Application.Dtos;
 
 namespace TesteTecnicoDiscord.Controllers;
 
@@ -13,7 +14,7 @@ public class GuildsController : ControllerBase
     }
 
     [HttpPost]
-    public async Task<IActionResult> CreateGuild(GuildRequestDto guildRequestDto)
+    public async Task<IActionResult> CreateGuild(CreateGuildRequestDto guildRequestDto)
     {
         throw new NotImplementedException();
     }
@@ -31,7 +32,7 @@ public class GuildsController : ControllerBase
     }
 
     [HttpPost("{guildId:guid}/channels")]
-    public async Task<IActionResult> CreateChannel(Guid guildId, ChannelRequestDto channelRequestDto)
+    public async Task<IActionResult> CreateChannel(Guid guildId, CreateChannelRequestDto channelRequestDto)
     {
         throw new NotImplementedException();
     }

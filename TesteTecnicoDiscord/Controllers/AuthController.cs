@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;
 
 namespace TesteTecnicoDiscord.Controllers;

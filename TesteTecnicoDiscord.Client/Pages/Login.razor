@@ -1,6 +1,71 @@
-﻿@page "/login"
-<h3>Login</h3>
+﻿@inherits LoginBase
+@page "/login"
 
-@code {
+<PageTitle>Login</PageTitle>
 
-}
+<div>
+
+    <MudGrid Spacing="0">
+        <MudItem xs="12">
+            <MudPaper Elevation="0" Height="100dvh" Width="100%" Class="teste pa-3 d-flex align-center justify-center">
+                <MudGrid Justify="Justify.Center" Spacing="0">
+                    <MudItem xs="6">
+                        <EditForm Model="userDto">
+                            <DataAnnotationsValidator></DataAnnotationsValidator>
+                            <ValidationSummary></ValidationSummary>
+
+                            <MudPaper Elevation="10" Class="d-flex rounded-lg align-center justify-center">
+                                <MudGrid Spacing="0">
+
+                                    <MudItem xs="12">
+                                        <MudStack>
+                                            <MudText Typo="Typo.h6" Align="Align.Center">Boas-vindas de volta!</MudText>
+                                            <MudText Typo="Typo.body1" Align="Align.Center">Estamos muito animados em te ver novamente!</MudText>
+                                        </MudStack>
+                                    </MudItem>
+
+                                    <MudItem xs="12">
+                                        <MudStack Spacing="0" Row="false">
+                                            <MudText>Username</MudText>
+                                            <MudTextField Margin="Margin.Dense"
+                                                          T="string"
+                                                          MaxLength="50"
+                                                          Variant="Variant.Outlined">
+                                            </MudTextField>
+                                        </MudStack>
+                                    </MudItem>
+
+                                    <MudItem xs="12">
+                                        <MudStack Spacing="0" Row="false">
+                                            <MudText>Senha</MudText>
+                                            <MudTextField Margin="Margin.Dense"
+                                                          T="string"
+                                                          MaxLength="50"
+                                                          Variant="Variant.Outlined">
+                                            </MudTextField>
+                                        </MudStack>
+                                    </MudItem>
+
+                                    <MudItem xs="12">
+                                        <MudText Align="Align.Start">Esqueceu sua senha?</MudText>
+                                    </MudItem>
+
+                                    <MudItem xs="12">
+                                        <MudButton FullWidth="true" Variant="Variant.Filled" Color="Color.Primary">Entrar</MudButton>
+                                    </MudItem>
+
+                                    <MudItem xs="12">
+                                        <MudText Align="Align.Start">Precisando de uma conta? <MudLink>Registre-se</MudLink></MudText>
+                                    </MudItem>
+
+                                </MudGrid>
+                            </MudPaper>
+
+                        </EditForm>
+                    </MudItem>
+
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</div>
