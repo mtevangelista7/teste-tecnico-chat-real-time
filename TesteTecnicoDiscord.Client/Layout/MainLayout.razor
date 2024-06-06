@@ -1,8 +1,8 @@
 ﻿@inherits LayoutComponentBase
 
-<MudThemeProvider IsDarkMode="true" Theme="_customTheme"/>
-<MudDialogProvider @rendermode="RenderMode.InteractiveWebAssembly"/>
-<MudSnackbarProvider @rendermode="RenderMode.InteractiveWebAssembly"/>
+<MudThemeProvider IsDarkMode="true" Theme="_customTheme" />
+<MudDialogProvider @rendermode="RenderMode.InteractiveWebAssembly" />
+<MudSnackbarProvider @rendermode="RenderMode.InteractiveWebAssembly" />
 
 <MudLayout>
     @Body
@@ -11,15 +11,22 @@
 @code {
 
     readonly MudTheme _customTheme = new()
-    {
-        Palette = new PaletteDark()
         {
-            Primary = "#7289DA", // Discord's primary color
-            Secondary = "#99AAB5",
-            Tertiary = "#FFFFFF", // Discord's tertiary color
-            Dark = "#2C2F33",
-            DarkDarken = "#23272A"
-        },
-    };
+            PaletteDark = new PaletteDark()
+            {
+                Primary = "#7289DA",
+                Secondary = "#99AAB5",
+                Tertiary = "#FFFFFF",
+                Dark = "#2C2F33",
+                DarkDarken = "#23272A"
+            },
 
+            Typography = new Typography()
+            {
+                Default = new Default()
+                {
+                    FontFamily = new[] { "Inter", "Roboto", "Helvetica Neue", "Helvetica", "Arial", "sans-serif", "Apple Symbols" }
+                }
+            }
+        };
 }

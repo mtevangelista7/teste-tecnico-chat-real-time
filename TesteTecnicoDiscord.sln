@@ -7,11 +7,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteTecnicoDiscord", "Test
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteTecnicoDiscord.Client", "TesteTecnicoDiscord.Client\TesteTecnicoDiscord.Client.csproj", "{4BE79D02-B0DB-4E6B-A8CD-8718C85E4928}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteTecnicoDiscord.Application", "TesteTecnicoDiscord.Application\TesteTecnicoDiscord.Application.csproj", "{F53092F7-6712-4C7D-AF78-67C69E187634}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteTecnicoDiscord.Application", "TesteTecnicoDiscord.Application\TesteTecnicoDiscord.Application.csproj", "{F53092F7-6712-4C7D-AF78-67C69E187634}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteTecnicoDiscord.Domain", "TesteTecnicoDiscord.Domain\TesteTecnicoDiscord.Domain.csproj", "{1B5B8669-C8CD-45A3-972C-D98E957B109A}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteTecnicoDiscord.Domain", "TesteTecnicoDiscord.Domain\TesteTecnicoDiscord.Domain.csproj", "{1B5B8669-C8CD-45A3-972C-D98E957B109A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteTecnicoDiscord.Infra", "TesteTecnicoDiscord.Infra\TesteTecnicoDiscord.Infra.csproj", "{E9C0D530-A1A7-4920-8B65-C4149D180D88}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteTecnicoDiscord.Infra", "TesteTecnicoDiscord.Infra\TesteTecnicoDiscord.Infra.csproj", "{E9C0D530-A1A7-4920-8B65-C4149D180D88}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

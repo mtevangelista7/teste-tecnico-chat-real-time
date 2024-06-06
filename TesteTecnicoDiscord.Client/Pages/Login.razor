@@ -7,26 +7,26 @@
 
     <MudGrid Spacing="0">
         <MudItem xs="12">
-            <MudPaper Elevation="0" Height="100dvh" Width="100%" Class="teste pa-3 d-flex align-center justify-center">
+            <MudPaper Elevation="0" Height="100dvh" Width="100%" Class="bgimage pa-3 d-flex align-center justify-center">
                 <MudGrid Justify="Justify.Center" Spacing="0">
-                    <MudItem xs="6">
+                    <MudItem xs="10" sm="6" md="4">
                         <EditForm Model="userDto">
                             <DataAnnotationsValidator></DataAnnotationsValidator>
                             <ValidationSummary></ValidationSummary>
 
-                            <MudPaper Elevation="10" Class="d-flex rounded-lg align-center justify-center">
-                                <MudGrid Spacing="0">
+                            <MudPaper Elevation="10" Class="d-flex rounded-lg align-center justify-center white-text pa-10">
+                                <MudGrid Spacing="2">
 
                                     <MudItem xs="12">
                                         <MudStack>
                                             <MudText Typo="Typo.h6" Align="Align.Center">Boas-vindas de volta!</MudText>
-                                            <MudText Typo="Typo.body1" Align="Align.Center">Estamos muito animados em te ver novamente!</MudText>
+                                            <MudText Color="Color.Secondary" Typo="Typo.body1" Align="Align.Center">Estamos muito animados em te ver novamente!</MudText>
                                         </MudStack>
                                     </MudItem>
 
                                     <MudItem xs="12">
                                         <MudStack Spacing="0" Row="false">
-                                            <MudText>Username</MudText>
+                                            <MudText Color="Color.Secondary">Username</MudText>
                                             <MudTextField Margin="Margin.Dense"
                                                           T="string"
                                                           MaxLength="50"
@@ -37,8 +37,12 @@
 
                                     <MudItem xs="12">
                                         <MudStack Spacing="0" Row="false">
-                                            <MudText>Senha</MudText>
+                                            <MudText Color="Color.Secondary">Senha</MudText>
                                             <MudTextField Margin="Margin.Dense"
+                                                          InputType="@PasswordInput"
+                                                          Adornment="Adornment.End"
+                                                          AdornmentIcon="@PasswordInputIcon"
+                                                          OnAdornmentClick="ShowPassword"
                                                           T="string"
                                                           MaxLength="50"
                                                           Variant="Variant.Outlined">
@@ -47,7 +51,9 @@
                                     </MudItem>
 
                                     <MudItem xs="12">
-                                        <MudText Align="Align.Start">Esqueceu sua senha?</MudText>
+                                        <MudLink>
+                                            <MudText Align="Align.Start">Esqueceu sua senha?</MudText>
+                                        </MudLink>
                                     </MudItem>
 
                                     <MudItem xs="12">
@@ -55,7 +61,7 @@
                                     </MudItem>
 
                                     <MudItem xs="12">
-                                        <MudText Align="Align.Start">Precisando de uma conta? <MudLink>Registre-se</MudLink></MudText>
+                                        <MudText Align="Align.Start" Color="Color.Secondary">Precisando de uma conta? <MudLink OnClick="HandleRegisterClickAsync">Registre-se</MudLink></MudText>
                                     </MudItem>
 
                                 </MudGrid>
