@@ -1,6 +1,8 @@
-﻿namespace TesteTecnicoDiscord.Domain.Entities;
+﻿using TesteTecnicoDiscord.Domain.Entities.Base;
 
-public class Message
+namespace TesteTecnicoDiscord.Domain.Entities;
+
+public class Message : EntityBase
 {
     
 }

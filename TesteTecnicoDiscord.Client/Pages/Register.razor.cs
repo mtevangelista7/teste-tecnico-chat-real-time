@@ -56,8 +56,6 @@ namespace TesteTecnicoDiscord.Client.Pages
             {
                 if (!editContext.Validate())
                 {
-                    // show error message
-                    await Help.ShowAlertDialog(DialogService, "não sei ainda");
                     return;
                 }
 
@@ -98,6 +96,5 @@ namespace TesteTecnicoDiscord.Client.Pages
                 await Help.HandleError(DialogService, ex, this);
             }
         }
-
     }
 }

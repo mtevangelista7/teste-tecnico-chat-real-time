@@ -1,6 +1,8 @@
-﻿namespace TesteTecnicoDiscord.Domain.Entities;
+﻿using TesteTecnicoDiscord.Domain.Entities.Base;
 
-public class Channel
+namespace TesteTecnicoDiscord.Domain.Entities;
+
+public class Channel : EntityBase
 {
     
 }

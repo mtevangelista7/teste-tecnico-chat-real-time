@@ -9,9 +9,17 @@ namespace TesteTecnicoDiscord.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] RegisterRequestDto request)
+    public async Task<IActionResult> Register([FromBody] CreateUserDto request)
     {
-        throw new NotImplementedException();
+        try
+        {
+            string token = await authService.Register(request);
+            return string.IsNullOrWhiteSpace(token) ? BadRequest() : Ok(token);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("login")]

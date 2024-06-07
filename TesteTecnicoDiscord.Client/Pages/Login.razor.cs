@@ -10,7 +10,7 @@ namespace TesteTecnicoDiscord.Client.Pages
         [Inject] NavigationManager NavigationManager { get; set; }
         [Inject] IDialogService DialogService { get; set; }
 
-        protected LoginUserDto userDto = new LoginUserDto("", ""); // TODO: Usar outra record
+        protected LoginUserDto userDto = new LoginUserDto("", "");
         protected bool isShow;
         protected InputType PasswordInput = InputType.Password;
         protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
