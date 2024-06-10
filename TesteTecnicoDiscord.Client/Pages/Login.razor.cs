@@ -1,17 +1,21 @@
 ﻿using Microsoft.AspNetCore.Components;
+using Microsoft.AspNetCore.Components.Forms;
 using MudBlazor;
 using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Client.CustomComponentBase;
 using TesteTecnicoDiscord.Client.Helper;
+using TesteTecnicoDiscord.Client.RefitInterfaces;
+using TesteTecnicoDiscord.Client.States;
 
 namespace TesteTecnicoDiscord.Client.Pages
 {
-    public class LoginBase : ComponentBase
+    public class LoginBase : ComponentBaseExtends
     {
-        [Inject] NavigationManager NavigationManager { get; set; }
-        [Inject] IDialogService DialogService { get; set; }
+        [Inject] private IAuthEndpoints AuthEndpoints { get; set; }
+        [Inject] private ISnackbar Snackbar { get; set; }
 
-        protected LoginUserDto userDto = new LoginUserDto("", "");
-        protected bool isShow;
+        protected LoginUserDto UserDto = new() { Password = "", Username = "" };
+        private bool _isShow;
         protected InputType PasswordInput = InputType.Password;
         protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
@@ -29,17 +33,56 @@ namespace TesteTecnicoDiscord.Client.Pages
 
         protected void ShowPassword()
         {
-            if (isShow)
+            if (_isShow)
             {
-                isShow = false;
+                _isShow = false;
                 PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
                 PasswordInput = InputType.Password;
             }
             else
             {
-                isShow = true;
+                _isShow = true;
                 PasswordInputIcon = Icons.Material.Filled.Visibility;
                 PasswordInput = InputType.Text;
+            }
+        }
+
+        protected async Task HandleLoginClickAsync(EditContext editContext)
+        {
+            try
+            {
+                if (!editContext.Validate())
+                {
+                    return;
+                }
+
+                await LoginUserAsync(UserDto);
+            }
+            catch (Exception ex)
+            {
+                await Help.HandleError(DialogService, ex, this);
+            }
+        }
+
+        private async Task LoginUserAsync(LoginUserDto loginUserDto)
+        {
+            try
+            {
+                var token = await AuthEndpoints.Login(loginUserDto);
+
+                if (string.IsNullOrWhiteSpace(token))
+                    throw new NullReferenceException();
+
+                var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+                await customAuthenticationStateProvider.UpdateAuthenticationStateAsync(token);
+
+                // go to channel page (?)
+                NavigationManager.NavigateTo("");
+                Snackbar.Add("", Severity.Success);
+            }
+            catch (Exception ex)
+            {
+                await Help.HandleError(DialogService, ex, this);
             }
         }
     }

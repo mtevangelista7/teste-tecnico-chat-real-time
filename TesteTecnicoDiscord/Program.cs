@@ -16,6 +16,7 @@ builder.Services.AddSignalR();
 builder.Services.AddMudServices();
 
 builder.Services.AddServiceCollection();
+builder.Services.AddRepositoriesCollection();
 
 builder.Services.AddControllers();
 

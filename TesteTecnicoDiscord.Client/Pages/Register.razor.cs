@@ -2,23 +2,29 @@
 using Microsoft.AspNetCore.Components.Forms;
 using Microsoft.AspNetCore.Components.Web.Virtualization;
 using MudBlazor;
+using Refit;
 using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Client.CustomComponentBase;
 using TesteTecnicoDiscord.Client.Helper;
+using TesteTecnicoDiscord.Client.RefitInterfaces;
+using TesteTecnicoDiscord.Client.States;
 
 namespace TesteTecnicoDiscord.Client.Pages
 {
-    public class RegisterBase : ComponentBase
+    public class RegisterBase : ComponentBaseExtends
     {
-        [Inject] NavigationManager NavigationManager { get; set; }
-        [Inject] IDialogService DialogService { get; set; }
+        [Inject] private IAuthEndpoints AuthEndpoints { get; set; }
+        [Inject] private ISnackbar Snackbar { get; set; }
 
-        // birth date variables
-        protected int year;
-        protected int month;
-        protected int day;
+        // birthdate variables
+        protected string Year;
+        protected string Month;
+        protected string Day;
 
-        protected CreateUserDto userDto = new CreateUserDto("", "", "", "", null);
-        protected bool isShow;
+        protected CreateUserDto UserDto = new()
+            { BirthDate = null, Email = "", Name = "", Password = "", Username = "" };
+
+        private bool _isShow;
         protected InputType PasswordInput = InputType.Password;
         protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
@@ -36,15 +42,15 @@ namespace TesteTecnicoDiscord.Client.Pages
 
         protected void ShowPassword()
         {
-            if (isShow)
+            if (_isShow)
             {
-                isShow = false;
+                _isShow = false;
                 PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
                 PasswordInput = InputType.Password;
             }
             else
             {
-                isShow = true;
+                _isShow = true;
                 PasswordInputIcon = Icons.Material.Filled.Visibility;
                 PasswordInput = InputType.Text;
             }
@@ -59,11 +65,13 @@ namespace TesteTecnicoDiscord.Client.Pages
                     return;
                 }
 
-                // check if the birth date is valid
-                var birthDate = new DateTime(year, month, day);
-                userDto.BirthDate = birthDate;
+                // TODO: Validate datetime
 
-                await RegisterUserAsync(userDto);
+                // check if the birthdate is valid
+                var birthDate = new DateTime(int.Parse(Year), int.Parse(Month), int.Parse(Day));
+                UserDto.BirthDate = birthDate;
+
+                await RegisterUserAsync(UserDto);
             }
             catch (Exception ex)
             {
@@ -75,6 +83,17 @@ namespace TesteTecnicoDiscord.Client.Pages
         {
             try
             {
+                var token = await AuthEndpoints.Register(createUserDto);
+
+                if (string.IsNullOrWhiteSpace(token))
+                    throw new NullReferenceException();
+
+                var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+                await customAuthenticationStateProvider.UpdateAuthenticationStateAsync(token);
+
+                // go to channel page (?)
+                NavigationManager.NavigateTo("");
+                Snackbar.Add("Your account has been created", Severity.Success);
             }
             catch (Exception ex)
             {
@@ -86,10 +105,10 @@ namespace TesteTecnicoDiscord.Client.Pages
         {
             try
             {
-                userDto = new CreateUserDto("", "", "", "", null);
-                year = 0;
-                month = 0;
-                day = 0;
+                UserDto = new() { BirthDate = null, Email = "", Name = "", Password = "", Username = "" };
+                Year = "";
+                Month = "";
+                Day = "";
             }
             catch (Exception ex)
             {

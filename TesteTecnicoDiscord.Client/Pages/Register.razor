@@ -10,7 +10,7 @@
             <MudPaper Elevation="0" Height="100dvh" Width="100%" Class="bgimage pa-3 d-flex align-center justify-center">
                 <MudGrid Justify="Justify.Center" Spacing="0">
                     <MudItem xs="10" sm="8" md="4">
-                        <EditForm Model="@userDto" OnSubmit="HandleRegisterClickAsync">
+                        <EditForm Model="@UserDto" OnSubmit="HandleRegisterClickAsync">
                             <DataAnnotationsValidator></DataAnnotationsValidator>
 
                             <MudPaper Elevation="10" Class="d-flex rounded-lg align-center justify-center white-text pa-10">
@@ -24,12 +24,12 @@
                                         <MudStack Spacing="0" Row="false">
                                             <MudText Color="Color.Secondary">E-mail</MudText>
                                             <MudTextField Margin="Margin.Dense"
-                                                          @bind-Value="userDto.Email"
+                                                          @bind-Value="UserDto.Email"
                                                           T="string"
                                                           MaxLength="250"
                                                           Variant="Variant.Outlined">
                                             </MudTextField>
-                                            <ValidationMessage For="@(() => userDto.Email)" />
+                                            <ValidationMessage For="@(() => UserDto.Email)"/>
                                         </MudStack>
                                     </MudItem>
 
@@ -37,12 +37,12 @@
                                         <MudStack Spacing="0" Row="false">
                                             <MudText Color="Color.Secondary">Nome Exibido</MudText>
                                             <MudTextField Margin="Margin.Dense"
-                                                          @bind-Value="userDto.Name"
+                                                          @bind-Value="UserDto.Name"
                                                           T="string"
                                                           MaxLength="100"
                                                           Variant="Variant.Outlined">
                                             </MudTextField>
-                                            <ValidationMessage For="@(() => userDto.Name)" />
+                                            <ValidationMessage For="@(() => UserDto.Name)"/>
                                         </MudStack>
                                     </MudItem>
 
@@ -50,12 +50,12 @@
                                         <MudStack Spacing="0" Row="false">
                                             <MudText Color="Color.Secondary">Nome de usuário</MudText>
                                             <MudTextField Margin="Margin.Dense"
-                                                          @bind-Value="userDto.Username"
+                                                          @bind-Value="UserDto.Username"
                                                           T="string"
                                                           MaxLength="100"
                                                           Variant="Variant.Outlined">
                                             </MudTextField>
-                                            <ValidationMessage For="@(() => userDto.Username)" />
+                                            <ValidationMessage For="@(() => UserDto.Username)"/>
                                         </MudStack>
                                     </MudItem>
 
@@ -63,7 +63,7 @@
                                         <MudStack Spacing="0" Row="false">
                                             <MudText Color="Color.Secondary">Senha</MudText>
                                             <MudTextField Margin="Margin.Dense"
-                                                          @bind-Value="userDto.Password"
+                                                          @bind-Value="UserDto.Password"
                                                           InputType="@PasswordInput"
                                                           Adornment="Adornment.End"
                                                           AdornmentIcon="@PasswordInputIcon"
@@ -72,7 +72,7 @@
                                                           MaxLength="50"
                                                           Variant="Variant.Outlined">
                                             </MudTextField>
-                                            <ValidationMessage For="@(() => userDto.Password)" />
+                                            <ValidationMessage For="@(() => UserDto.Password)"/>
                                         </MudStack>
                                     </MudItem>
 
@@ -84,6 +84,7 @@
                                                 <MudSelect Margin="Margin.Dense"
                                                            Placeholder="Dia"
                                                            T="string"
+                                                           @bind-value="Day"
                                                            MaxLength="50"
                                                            Variant="Variant.Outlined">
 
@@ -96,6 +97,7 @@
                                                 <MudSelect Margin="Margin.Dense"
                                                            Placeholder="Mês"
                                                            T="string"
+                                                           @bind-value="Month"
                                                            MaxLength="50"
                                                            Variant="Variant.Outlined">
 
@@ -108,6 +110,7 @@
                                                 <MudSelect Margin="Margin.Dense"
                                                            Placeholder="Ano"
                                                            T="string"
+                                                           @bind-value="Year"
                                                            MaxLength="50"
                                                            Variant="Variant.Outlined">
 

@@ -7,11 +7,14 @@ using System.Threading.Tasks;
 
 namespace TesteTecnicoDiscord.Application.Dtos
 {
-    public record LoginUserDto(string Username, string Password)
+    public class LoginUserDto
     {
         [Required(ErrorMessage = "O campo username é obrigatório.")]
-        public string Username { get; set; } = Username;
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome de usuário tem pelo menos 3 caracteres")]
+        public string Username { get; set; }
+
         [Required(ErrorMessage = "O campo senha é obrigatório.")]
-        public string Password { get; set; } = Password;
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome de usuário tem pelo menos 8 caracteres")]
+        public string Password { get; set; }
     }
 }

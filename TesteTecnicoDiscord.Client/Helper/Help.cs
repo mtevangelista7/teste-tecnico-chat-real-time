@@ -8,13 +8,13 @@ namespace TesteTecnicoDiscord.Client.Helper
     {
         public static async Task ShowAlertDialog(IDialogService DialogService, string message)
         {
-            var dialog = DialogService.Show<AlertDialog>("Alert", new DialogParameters { { "Message", message } });
+            var dialog = await DialogService.ShowAsync<AlertDialog>("Alert", new DialogParameters { { "Message", message } });
             var result = await dialog.Result;
         }
 
         public static async Task<bool> ShowConfirmDialog(IDialogService DialogService, string message)
         {
-            var dialog = DialogService.Show<ConfirmDialog>("Confirm", new DialogParameters { { "Message", message } });
+            var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirm", new DialogParameters { { "Message", message } });
             var result = await dialog.Result;
 
             return result.Canceled;
@@ -22,7 +22,7 @@ namespace TesteTecnicoDiscord.Client.Helper
 
         public static async Task HandleError(IDialogService DialogService, Exception exception, object component)
         {
-            var dialog = DialogService.Show<AlertDialog>("Error", new DialogParameters { { "Message", exception.Message } });
+            var dialog = await DialogService.ShowAsync<AlertDialog>("Error", new DialogParameters { { "Message", exception.Message } });
             var result = await dialog.Result;
 
             if (component is ComponentBase componentBase)

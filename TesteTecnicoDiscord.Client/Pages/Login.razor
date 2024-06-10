@@ -10,9 +10,8 @@
             <MudPaper Elevation="0" Height="100dvh" Width="100%" Class="bgimage pa-3 d-flex align-center justify-center">
                 <MudGrid Justify="Justify.Center" Spacing="0">
                     <MudItem xs="10" sm="6" md="4">
-                        <EditForm Model="userDto">
+                        <EditForm Model="UserDto" OnSubmit="HandleLoginClickAsync">
                             <DataAnnotationsValidator></DataAnnotationsValidator>
-                            <ValidationSummary></ValidationSummary>
 
                             <MudPaper Elevation="10" Class="d-flex rounded-lg align-center justify-center white-text pa-10">
                                 <MudGrid Spacing="2">
@@ -28,10 +27,12 @@
                                         <MudStack Spacing="0" Row="false">
                                             <MudText Color="Color.Secondary">Username</MudText>
                                             <MudTextField Margin="Margin.Dense"
+                                                          @bind-value="UserDto.Username"
                                                           T="string"
                                                           MaxLength="50"
                                                           Variant="Variant.Outlined">
                                             </MudTextField>
+                                            <ValidationMessage For="@(() => UserDto.Username)"/>
                                         </MudStack>
                                     </MudItem>
 
@@ -39,6 +40,7 @@
                                         <MudStack Spacing="0" Row="false">
                                             <MudText Color="Color.Secondary">Senha</MudText>
                                             <MudTextField Margin="Margin.Dense"
+                                                          @bind-value="UserDto.Password"
                                                           InputType="@PasswordInput"
                                                           Adornment="Adornment.End"
                                                           AdornmentIcon="@PasswordInputIcon"
@@ -47,6 +49,7 @@
                                                           MaxLength="50"
                                                           Variant="Variant.Outlined">
                                             </MudTextField>
+                                            <ValidationMessage For="@(() => UserDto.Password)"/>
                                         </MudStack>
                                     </MudItem>
 
@@ -57,7 +60,7 @@
                                     </MudItem>
 
                                     <MudItem xs="12">
-                                        <MudButton FullWidth="true" Variant="Variant.Filled" Color="Color.Primary">Entrar</MudButton>
+                                        <MudButton ButtonType="ButtonType.Submit" FullWidth="true" Variant="Variant.Filled" Color="Color.Primary">Entrar</MudButton>
                                     </MudItem>
 
                                     <MudItem xs="12">

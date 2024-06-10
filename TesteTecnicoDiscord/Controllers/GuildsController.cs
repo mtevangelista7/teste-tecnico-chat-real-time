@@ -7,7 +7,7 @@ namespace TesteTecnicoDiscord.Controllers;
 [Route("[controller]")]
 public class GuildsController : ControllerBase
 {
-    [HttpGet]
+    [HttpGet("getGuilds")]
     public async Task<IActionResult> GetGuilds()
     {
         throw new NotImplementedException();
