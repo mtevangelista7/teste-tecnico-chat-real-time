@@ -57,6 +57,10 @@ namespace TesteTecnicoDiscord.Client.Pages
                 }
 
                 await LoginUserAsync(UserDto);
+                
+                // go to channel page (?)
+                NavigationManager.NavigateTo("/Guilds");
+                Snackbar.Add("deu bom!", Severity.Success);
             }
             catch (Exception ex)
             {
@@ -75,10 +79,6 @@ namespace TesteTecnicoDiscord.Client.Pages
 
                 var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
                 await customAuthenticationStateProvider.UpdateAuthenticationStateAsync(token);
-
-                // go to channel page (?)
-                NavigationManager.NavigateTo("");
-                Snackbar.Add("", Severity.Success);
             }
             catch (Exception ex)
             {

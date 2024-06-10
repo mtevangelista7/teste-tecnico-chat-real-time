@@ -19,6 +19,10 @@ builder.Services.AddRefitClient<IAuthEndpoints>()
     .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:7290"))
     .AddHttpMessageHandler<AuthenticatedHttpClientHandler>();
 
+builder.Services.AddRefitClient<IGuildsEndpoints>()
+    .ConfigureHttpClient(c => c.BaseAddress = new Uri("https://localhost:7290"))
+    .AddHttpMessageHandler<AuthenticatedHttpClientHandler>();
+
 builder.Services.AddScoped(sp => new HttpClient { BaseAddress = new Uri(builder.HostEnvironment.BaseAddress) });
 
 // Blazored
@@ -26,5 +30,6 @@ builder.Services.AddBlazoredLocalStorage();
 
 // CustomAuthenticationStateProvider
 builder.Services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
+
 
 await builder.Build().RunAsync();

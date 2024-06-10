@@ -1,16 +1,34 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Mapster;
+using Microsoft.AspNetCore.Mvc;
 using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Domain.Entities;
+using TesteTecnicoDiscord.Infra.Interfaces;
 
 namespace TesteTecnicoDiscord.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GuildsController : ControllerBase
+public class GuildsController(IGuildsRepository guildsRepository) : ControllerBase
 {
     [HttpGet("getGuilds")]
     public async Task<IActionResult> GetGuilds()
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<GetGuildsDto> listResponse = [];
+            var listGuilds = await guildsRepository.GetAll();
+
+            if (listGuilds != null && listGuilds.Count > 0)
+            {
+                listResponse = listGuilds.Adapt<List<GetGuildsDto>>();
+            }
+
+            return Ok(listResponse);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost]

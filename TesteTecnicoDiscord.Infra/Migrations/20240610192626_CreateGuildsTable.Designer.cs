@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TesteTecnicoDiscord.Infra.Data.Context;
 
@@ -10,9 +11,11 @@ using TesteTecnicoDiscord.Infra.Data.Context;
 namespace TesteTecnicoDiscord.Infra.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240610192626_CreateGuildsTable")]
+    partial class CreateGuildsTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.6");
@@ -25,7 +28,7 @@ namespace TesteTecnicoDiscord.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Channels", (string)null);
+                    b.ToTable("Channels");
                 });
 
             modelBuilder.Entity("TesteTecnicoDiscord.Domain.Entities.Guild", b =>
@@ -51,7 +54,7 @@ namespace TesteTecnicoDiscord.Infra.Migrations
 
                     b.HasIndex("OwnerUserId");
 
-                    b.ToTable("Guilds", (string)null);
+                    b.ToTable("Guilds");
                 });
 
             modelBuilder.Entity("TesteTecnicoDiscord.Domain.Entities.Message", b =>
@@ -62,7 +65,7 @@ namespace TesteTecnicoDiscord.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Messages", (string)null);
+                    b.ToTable("Messages");
                 });
 
             modelBuilder.Entity("TesteTecnicoDiscord.Domain.Entities.User", b =>
@@ -96,7 +99,7 @@ namespace TesteTecnicoDiscord.Infra.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("TesteTecnicoDiscord.Domain.Entities.Guild", b =>

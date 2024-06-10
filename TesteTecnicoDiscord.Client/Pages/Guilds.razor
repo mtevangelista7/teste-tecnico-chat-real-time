@@ -6,9 +6,12 @@
 <div>
 
     <MudAppBar Color="Color.Primary" Fixed="false" Dense="true">
-        <MudIconButton Icon="@Icons.Material.Filled.Pix" Color="Color.Inherit" Edge="Edge.Start" />
-        <MudSpacer />
-        <MudIconButton Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" />
+        <MudIconButton Icon="@Icons.Material.Filled.Pix" Color="Color.Inherit" Edge="Edge.Start"/>
+        <MudSpacer/>
+        <MudStack AlignItems="AlignItems.Center" Row="true">
+            <MudText>@Username</MudText>
+            <MudIconButton OnClick="LogOutUser" Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit" />
+        </MudStack>
     </MudAppBar>
 
     <MudPaper Class="mud-theme-primary d-flex align-center justify-center" Height="calc(50dvh - 48px)">
@@ -31,7 +34,7 @@
                                           Variant="Variant.Outlined"
                                           Adornment="Adornment.End"
                                           AdornmentIcon="@Icons.Material.Filled.Search"
-                                          AdornmentColor="Color.Tertiary" />
+                                          AdornmentColor="Color.Tertiary"/>
                         </MudStack>
                     </MudItem>
                 </MudGrid>
@@ -44,31 +47,38 @@
             <MudItem xs="12">
                 <MudPaper Elevation="0" Width="100%" Class="pa-3 d-flex justify-center">
                     <MudGrid Spacing="0">
-                        <MudItem xs="4">
-                            <MudGrid Spacing="0">
-                                <MudItem xs="4">
-                                    <MudPaper Class="pa-1 d-flex align-center justify-center" Height="100%" Elevation="3">
-                                        <MudAvatar Size="Size.Large" Rounded="true" Color="Color.Primary" Variant="Variant.Outlined">
-                                            <MudIcon Icon="@Icons.Material.Filled.Person" />
-                                        </MudAvatar>
-                                    </MudPaper>
-                                </MudItem>
-                                <MudItem xs="8">
-                                    <MudPaper Class="pa-1" Elevation="3">
-                                        <MudStack>
-                                            <MudText>
-                                                <b>Nome Server</b>
-                                            </MudText>
 
-                                            <MudStack>
-                                                <MudText>20 membros</MudText>
-                                                <MudText>alguma outra info</MudText>
-                                            </MudStack>
-                                        </MudStack>
-                                    </MudPaper>
+                        @if (Guilds is { Count: > 0 })
+                        {
+                            @foreach (var guild in Guilds)
+                            {
+                                <MudItem xs="4">
+                                    <MudGrid Spacing="0">
+                                        <MudItem xs="4">
+                                            <MudPaper Class="pa-1 d-flex align-center justify-center" Height="100%" Elevation="3">
+                                                <MudAvatar Size="Size.Large" Rounded="true" Color="Color.Primary" Variant="Variant.Outlined">
+                                                    <MudIcon Icon="@Icons.Material.Filled.Person"/>
+                                                </MudAvatar>
+                                            </MudPaper>
+                                        </MudItem>
+                                        <MudItem xs="8">
+                                            <MudPaper Class="pa-1" Elevation="3">
+                                                <MudStack>
+                                                    <MudText>
+                                                        <b>@guild.Name</b>
+                                                    </MudText>
+
+                                                    <MudStack>
+                                                        <MudText>@guild.MembersCount membros</MudText>
+                                                        <MudText>@guild.MessagesCount mensagens</MudText>
+                                                    </MudStack>
+                                                </MudStack>
+                                            </MudPaper>
+                                        </MudItem>
+                                    </MudGrid>
                                 </MudItem>
-                            </MudGrid>
-                        </MudItem>
+                            }
+                        }
                     </MudGrid>
                 </MudPaper>
             </MudItem>

@@ -72,6 +72,9 @@ namespace TesteTecnicoDiscord.Client.Pages
                 UserDto.BirthDate = birthDate;
 
                 await RegisterUserAsync(UserDto);
+
+                NavigationManager.NavigateTo("/Guilds");
+                Snackbar.Add("deu bom!", Severity.Success);
             }
             catch (Exception ex)
             {
@@ -90,10 +93,6 @@ namespace TesteTecnicoDiscord.Client.Pages
 
                 var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
                 await customAuthenticationStateProvider.UpdateAuthenticationStateAsync(token);
-
-                // go to channel page (?)
-                NavigationManager.NavigateTo("");
-                Snackbar.Add("Your account has been created", Severity.Success);
             }
             catch (Exception ex)
             {
