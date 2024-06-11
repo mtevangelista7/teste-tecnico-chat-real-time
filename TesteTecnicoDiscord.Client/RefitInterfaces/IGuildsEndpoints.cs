@@ -7,4 +7,7 @@ public interface IGuildsEndpoints
 {
     [Get("/guilds/getGuilds")]
     public Task<List<GetGuildsDto>> GetGuilds();
+
+    [Post("/guilds/create")]
+    public Task CrateNewGuild(CreateGuildDto createGuildDto);
 }

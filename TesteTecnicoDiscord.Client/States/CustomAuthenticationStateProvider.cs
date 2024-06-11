@@ -67,4 +67,9 @@ public class CustomAuthenticationStateProvider(ILocalStorageService localStorage
         // Notify authentication state changed
         NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(claims)));
     }
+
+    public async Task LogOut()
+    {
+        await localStorage.RemoveItemAsync(LocalStorageKey);
+    }
 }

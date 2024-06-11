@@ -14,7 +14,7 @@ namespace TesteTecnicoDiscord.Application.Dtos
         public string Name { get; set; }
 
         [Required(ErrorMessage = "O campo nome de usuário é obrigatório.")]
-        [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome de usuário deve ter entre 3 e 100 caracteres.")]
+        [StringLength(50, MinimumLength = 3, ErrorMessage = "O nome de usuário deve ter entre 3 e 50 caracteres.")]
         public string Username { get; set; }
 
         [Required(ErrorMessage = "O campo senha é obrigatório.")]

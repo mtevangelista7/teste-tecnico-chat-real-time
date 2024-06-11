@@ -19,6 +19,26 @@ namespace TesteTecnicoDiscord.Client.Pages
         protected InputType PasswordInput = InputType.Password;
         protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
 
+        protected override async Task OnInitializedAsync()
+        {
+            try
+            {
+                var authState = await AuthStateProvider
+                    .GetAuthenticationStateAsync();
+
+                var user = authState.User;
+
+                if (user.Identity is not null && user.Identity.IsAuthenticated)
+                {
+                    NavigationManager.NavigateTo("/guilds");
+                }
+            }
+            catch (Exception ex)
+            {
+                await Help.HandleError(DialogService, ex, this);
+            }
+        }
+
         protected async Task HandleRegisterClickAsync()
         {
             try
@@ -57,7 +77,7 @@ namespace TesteTecnicoDiscord.Client.Pages
                 }
 
                 await LoginUserAsync(UserDto);
-                
+
                 // go to channel page (?)
                 NavigationManager.NavigateTo("/Guilds");
                 Snackbar.Add("deu bom!", Severity.Success);

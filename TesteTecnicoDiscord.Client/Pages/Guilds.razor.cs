@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Components;
+using MudBlazor;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Client.CustomComponentBase;
+using TesteTecnicoDiscord.Client.Dialogs;
 using TesteTecnicoDiscord.Client.Helper;
 using TesteTecnicoDiscord.Client.RefitInterfaces;
+using TesteTecnicoDiscord.Client.States;
 
 namespace TesteTecnicoDiscord.Client.Pages;
 
@@ -11,6 +14,7 @@ public class GuildsBase : ComponentBaseExtends
     [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
 
     protected string Username = string.Empty;
+    protected bool Processing = false;
     private Guid _userId = Guid.Empty;
 
     protected List<GetGuildsDto> Guilds = [];
@@ -53,6 +57,46 @@ public class GuildsBase : ComponentBaseExtends
     }
 
     protected async Task LogOutUser()
+    {
+        try
+        {
+            var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+            await customAuthenticationStateProvider.LogOut();
+
+            NavigationManager.NavigateTo("/login");
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
+        }
+    }
+
+    protected async Task OnClickAddNewGuild()
+    {
+        try
+        {
+            Processing = true;
+
+            // open the dialog
+            var dialog = await DialogService.ShowAsync<CreateGuildDialog>("Criar novo guild",
+                new DialogParameters { { "OwnerId", _userId } });
+            var result = await dialog.Result;
+
+            Processing = false;
+
+            if (result.Canceled)
+                return;
+
+            Guilds = await GetGuilds();
+            StateHasChanged();
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
+        }
+    }
+
+    protected async Task OnClickDelete(Guid guildId)
     {
         try
         {

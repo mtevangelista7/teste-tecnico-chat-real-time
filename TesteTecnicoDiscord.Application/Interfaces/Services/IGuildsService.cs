@@ -1,6 +1,10 @@
-﻿namespace TesteTecnicoDiscord.Application.Interfaces.Services;
+﻿using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Domain.Entities;
+
+namespace TesteTecnicoDiscord.Application.Interfaces.Services;
 
 public interface IGuildsService
 {
-    
+    Task<List<Guild>> GetAll();
+    Task<Guild> CreateNewGuild(CreateGuildDto guild);
 }

@@ -1,6 +1,8 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Mvc;
 using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Application.Interfaces.Services;
+using TesteTecnicoDiscord.Client.Helper;
 using TesteTecnicoDiscord.Domain.Entities;
 using TesteTecnicoDiscord.Infra.Interfaces;
 
@@ -8,7 +10,7 @@ namespace TesteTecnicoDiscord.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GuildsController(IGuildsRepository guildsRepository) : ControllerBase
+public class GuildsController(IGuildsService guildsService) : ControllerBase
 {
     [HttpGet("getGuilds")]
     public async Task<IActionResult> GetGuilds()
@@ -16,7 +18,7 @@ public class GuildsController(IGuildsRepository guildsRepository) : ControllerBa
         try
         {
             List<GetGuildsDto> listResponse = [];
-            var listGuilds = await guildsRepository.GetAll();
+            var listGuilds = await guildsService.GetAll();
 
             if (listGuilds != null && listGuilds.Count > 0)
             {
@@ -31,10 +33,22 @@ public class GuildsController(IGuildsRepository guildsRepository) : ControllerBa
         }
     }
 
-    [HttpPost]
-    public async Task<IActionResult> CreateGuild(CreateGuildRequestDto guildRequestDto)
+    [HttpPost("create")]
+    public async Task<IActionResult> CreateGuild(CreateGuildDto guildDto)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var guild = await guildsService.CreateNewGuild(guildDto);
+
+            if (guild is null)
+                NotFound("usuário não localizado kkkkkkkkkkk");
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{guildId:guid}")]
