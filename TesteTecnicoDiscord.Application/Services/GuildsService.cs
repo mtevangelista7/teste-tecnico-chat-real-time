@@ -22,10 +22,17 @@ public class GuildsService(IGuildsRepository guildsRepository, IUserRepository u
         var guild = new Guild()
         {
             Name = guildRequest.Name,
+            MembersCount = 1,
+            MessagesCount = 0,
             OwnerUser = user
         };
 
-        var newGuild = await guildsRepository.Add(guild);
+        var newGuild = await guildsRepository.CreateNewGuild(guild);
         return newGuild;
+    }
+
+    public async Task DeleteGuild(Guid guildId)
+    {
+        await guildsRepository.Delete(guildId);
     }
 }

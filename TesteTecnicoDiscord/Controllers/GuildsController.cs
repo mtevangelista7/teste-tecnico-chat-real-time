@@ -10,7 +10,7 @@ namespace TesteTecnicoDiscord.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GuildsController(IGuildsService guildsService) : ControllerBase
+public class GuildsController(IGuildsService guildsService, IChannelService channelService) : ControllerBase
 {
     [HttpGet("getGuilds")]
     public async Task<IActionResult> GetGuilds()
@@ -20,7 +20,28 @@ public class GuildsController(IGuildsService guildsService) : ControllerBase
             List<GetGuildsDto> listResponse = [];
             var listGuilds = await guildsService.GetAll();
 
-            if (listGuilds != null && listGuilds.Count > 0)
+            if (listGuilds is { Count: > 0 })
+            {
+                listResponse = listGuilds.Adapt<List<GetGuildsDto>>();
+            }
+
+            return Ok(listResponse);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+    
+    [HttpGet("getGuilds")]
+    public async Task<IActionResult> GetGuild()
+    {
+        try
+        {
+            List<GetGuildsDto> listResponse = [];
+            var listGuilds = await guildsService.GetAll();
+
+            if (listGuilds is { Count: > 0 })
             {
                 listResponse = listGuilds.Adapt<List<GetGuildsDto>>();
             }
@@ -54,19 +75,55 @@ public class GuildsController(IGuildsService guildsService) : ControllerBase
     [HttpDelete("{guildId:guid}")]
     public async Task<IActionResult> DeleteGuild(Guid guildId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            // TODO: Verificar se o cascade está funcionando corretamente nas tabelas de junção
+            await guildsService.DeleteGuild(guildId);
+            return Accepted();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
-    [HttpGet("{guildId:guid}")]
+    [HttpGet("getChannels{guildId:guid}")]
     public async Task<IActionResult> GetAllGuildsRoms(Guid guildId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            List<GetChannelsDto> listResponse = [];
+            var listChannels = await channelService.GetAllChannelsById(guildId);
+
+            if (listChannels is { Count: > 0 })
+            {
+                listResponse = listChannels.Adapt<List<GetChannelsDto>>();
+            }
+
+            return Ok(listResponse);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpPost("{guildId:guid}/channels")]
-    public async Task<IActionResult> CreateChannel(Guid guildId, CreateChannelRequestDto channelRequestDto)
+    public async Task<IActionResult> CreateChannel(Guid guildId, CreateChannelDto request)
     {
-        throw new NotImplementedException();
+        try
+        {
+            var newChannel = await channelService.CreateNewChannel(request);
+
+            if (newChannel is null)
+                NotFound("servidor não localizado kkkkkkkkkkk");
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpDelete("{guildId:guid}/channels/{channelId:guid}/messages/{messageId:guid}")]

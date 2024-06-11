@@ -1,10 +1,9 @@
 ﻿@inherits GuildsBase
 @page "/Guilds"
 
-<PageTitle>Guilds</PageTitle>
+<PageTitle>Servidores</PageTitle>
 
 <div>
-
     <MudAppBar Color="Color.Primary" Fixed="false" Dense="true">
         <MudIconButton Icon="@Icons.Material.Filled.Pix" Color="Color.Inherit" Edge="Edge.Start"/>
         <MudSpacer/>
@@ -81,16 +80,16 @@
                                                     </MudText>
 
                                                     <MudStack>
-                                                        <MudText Typo="Typo.subtitle1">@guild.MembersCount membros</MudText>
-                                                        <MudText Typo="Typo.subtitle1">@guild.MessagesCount mensagens</MudText>
+                                                        <MudText Typo="Typo.subtitle1">@guild.MembersCount membro(s)</MudText>
+                                                        <MudText Typo="Typo.subtitle1">@guild.MessagesCount mensagem(s)</MudText>
                                                     </MudStack>
                                                 </MudStack>
                                             </MudPaper>
                                         </MudItem>
                                         <MudItem xs="3">
                                             <MudStack Justify="Justify.SpaceBetween" Style="height: 100%">
-                                                <MudButton Variant="Variant.Outlined" Color="Color.Success">Entrar</MudButton>
-                                                <MudButton Variant="Variant.Outlined" Color="Color.Error">Deletar</MudButton>
+                                                <MudButton OnClick="e => OnClickJoin(guild)" Variant="Variant.Outlined" Color="Color.Success">Entrar</MudButton>
+                                                <MudButton OnClick="e => OnClickDelete(guild)" Variant="Variant.Outlined" Color="Color.Error">Deletar</MudButton>
                                             </MudStack>
                                         </MudItem>
                                     </MudGrid>

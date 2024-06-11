@@ -3,7 +3,7 @@ using TesteTecnicoDiscord.Infra.Interfaces.Generic;
 
 namespace TesteTecnicoDiscord.Infra.Interfaces;
 
-public interface IGuildsRepository : IRepository<Guild>
+public interface IChannelRepository : IRepository<Channel>
 {
-    Task<Guild> CreateNewGuild(Guild guild);
+    Task<List<Channel>> GetAllChannelsById(Guid guildId);
 }

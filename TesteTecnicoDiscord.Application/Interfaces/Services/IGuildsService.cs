@@ -7,4 +7,5 @@ public interface IGuildsService
 {
     Task<List<Guild>> GetAll();
     Task<Guild> CreateNewGuild(CreateGuildDto guild);
+    Task DeleteGuild(Guid guildId);
 }

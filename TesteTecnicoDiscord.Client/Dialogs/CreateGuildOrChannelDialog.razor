@@ -1,0 +1,84 @@
+@inherits CreateGuildOrChannelDialogBase
+
+<MudDialog>
+    <DialogContent>
+        <MudGrid Spacing="0">
+            <MudItem xs="12">
+
+
+                @if (CreateGuild)
+                {
+                    <EditForm Model="CreateGuildDto" OnSubmit="HandleCreateGuildClickAsync">
+                        <DataAnnotationsValidator></DataAnnotationsValidator>
+
+                        <MudGrid>
+                            <MudItem xs="12">
+                                <MudStack Spacing="0" Row="false">
+                                    <MudText Color="Color.Secondary">ID Criador</MudText>
+                                    <MudTextField Margin="Margin.Dense"
+                                                  @bind-value="CreateGuildDto.OwnerId"
+                                                  ReadOnly="true"
+                                                  T="Guid"
+                                                  MaxLength="50"
+                                                  Variant="Variant.Outlined">
+                                    </MudTextField>
+                                    <ValidationMessage For="@(() => CreateGuildDto.OwnerId)"/>
+                                </MudStack>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudStack Spacing="0" Row="false">
+                                    <MudText Color="Color.Secondary">Nome</MudText>
+                                    <MudTextField Margin="Margin.Dense"
+                                                  @bind-value="CreateGuildDto.Name"
+                                                  T="string"
+                                                  MaxLength="50"
+                                                  Variant="Variant.Outlined">
+                                    </MudTextField>
+                                    <ValidationMessage For="@(() => CreateGuildDto.Name)"/>
+                                </MudStack>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudStack AlignItems="AlignItems.End" Justify="Justify.FlexEnd" Row="true">
+                                    <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Criar</MudButton>
+                                    <MudButton Color="Color.Error" OnClick="Cancel">Cancelar</MudButton>
+                                </MudStack>
+                            </MudItem>
+                        </MudGrid>
+                    </EditForm>
+                }
+                else
+                {
+                    <EditForm Model="CreateChannelDto" OnSubmit="HandleCreateChannelClickAsync">
+                        <DataAnnotationsValidator></DataAnnotationsValidator>
+
+                        <MudGrid>
+                            <MudItem xs="12">
+                                <MudStack Spacing="0" Row="false">
+                                    <MudText Color="Color.Secondary">Nome</MudText>
+                                    <MudTextField Margin="Margin.Dense"
+                                                  @bind-value="CreateChannelDto.Name"
+                                                  T="string"
+                                                  MaxLength="50"
+                                                  Variant="Variant.Outlined">
+                                    </MudTextField>
+                                    <ValidationMessage For="@(() => CreateChannelDto.Name)"/>
+                                </MudStack>
+                            </MudItem>
+
+                            <MudItem xs="12">
+                                <MudStack AlignItems="AlignItems.End" Justify="Justify.FlexEnd" Row="true">
+                                    <MudButton ButtonType="ButtonType.Submit" Color="Color.Primary">Criar</MudButton>
+                                    <MudButton Color="Color.Error" OnClick="Cancel">Cancelar</MudButton>
+                                </MudStack>
+                            </MudItem>
+                        </MudGrid>
+                    </EditForm>
+                }
+
+
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+</MudDialog>

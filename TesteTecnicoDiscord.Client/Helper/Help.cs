@@ -6,23 +6,23 @@ namespace TesteTecnicoDiscord.Client.Helper
 {
     public class Help
     {
-        public static async Task ShowAlertDialog(IDialogService DialogService, string message)
+        public static async Task ShowAlertDialog(IDialogService dialogService, string message)
         {
-            var dialog = await DialogService.ShowAsync<AlertDialog>("Alert", new DialogParameters { { "Message", message } });
+            var dialog = await dialogService.ShowAsync<AlertDialog>("Alert", new DialogParameters { { "Message", message } });
             var result = await dialog.Result;
         }
 
-        public static async Task<bool> ShowConfirmDialog(IDialogService DialogService, string message)
+        public static async Task<bool> ShowConfirmDialog(IDialogService dialogService, string message)
         {
-            var dialog = await DialogService.ShowAsync<ConfirmDialog>("Confirm", new DialogParameters { { "Message", message } });
+            var dialog = await dialogService.ShowAsync<ConfirmDialog>("Confirm", new DialogParameters { { "Message", message } });
             var result = await dialog.Result;
 
-            return result.Canceled;
+            return !result.Canceled;
         }
 
-        public static async Task HandleError(IDialogService DialogService, Exception exception, object component)
+        public static async Task HandleError(IDialogService dialogService, Exception exception, object component)
         {
-            var dialog = await DialogService.ShowAsync<AlertDialog>("Error", new DialogParameters { { "Message", exception.Message } });
+            var dialog = await dialogService.ShowAsync<AlertDialog>("Error", new DialogParameters { { "Message", exception.Message } });
             var result = await dialog.Result;
 
             if (component is ComponentBase componentBase)

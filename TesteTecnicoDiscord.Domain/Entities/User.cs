@@ -10,4 +10,7 @@ public class User : EntityBase
     public DateTime BirthDate { get; set; }
     public byte[] PasswordHash { get; set; }
     public byte[] PasswordSalt { get; set; }
+    public ICollection<GuildUser> GuildUsers { get; set; } = new List<GuildUser>();
+    public ICollection<ChannelUser> ChannelUsers { get; set; } = new List<ChannelUser>();
+    public ICollection<Message> Messages { get; set; } = new List<Message>();
 }

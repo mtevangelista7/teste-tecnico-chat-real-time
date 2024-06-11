@@ -1,5 +1,7 @@
-﻿using Refit;
+﻿using MudBlazor;
+using Refit;
 using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Domain.Entities;
 
 namespace TesteTecnicoDiscord.Client.RefitInterfaces;
 
@@ -9,5 +11,17 @@ public interface IGuildsEndpoints
     public Task<List<GetGuildsDto>> GetGuilds();
 
     [Post("/guilds/create")]
-    public Task CrateNewGuild(CreateGuildDto createGuildDto);
+    public Task CreateNewGuild(CreateGuildDto request);
+
+    [Delete("/guilds/{id}")]
+    public Task DeleteGuild(Guid id);
+
+    [Get("/guilds/getById/{id}")]
+    public Task<GetGuildsDto> GetGuild(Guid id);
+
+    [Get("/guilds/getChannels{id}")]
+    public Task<List<GetChannelsDto>> GetChannels(Guid id);
+
+    [Post("/guilds/{guildId}/channels")]
+    public Task CreateNewChannel(Guid guildId, CreateChannelDto request);
 }

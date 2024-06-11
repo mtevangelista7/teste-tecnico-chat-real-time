@@ -12,6 +12,7 @@ public static class DependencyInjectionExtensions
         serviceCollection.AddScoped<IAuthService, AuthService>();
         serviceCollection.AddScoped<IGuildsService, GuildsService>();
         serviceCollection.AddScoped<IUserService, UserService>();
+        serviceCollection.AddScoped<IChannelService, ChannelService>();
 
         return serviceCollection;
     }
@@ -20,6 +21,7 @@ public static class DependencyInjectionExtensions
     {
         serviceCollection.AddScoped<IUserRepository, UserRepository>();
         serviceCollection.AddScoped<IGuildsRepository, GuildsRepository>();
+        serviceCollection.AddScoped<IChannelRepository, ChannelRepository>();
         return serviceCollection;
     }
 }

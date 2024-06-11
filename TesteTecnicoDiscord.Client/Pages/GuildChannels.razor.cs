@@ -9,16 +9,18 @@ using TesteTecnicoDiscord.Client.States;
 
 namespace TesteTecnicoDiscord.Client.Pages;
 
-public class GuildsBase : ComponentBaseExtends
+public class GuildChannelsBase : ComponentBaseExtends
 {
-    [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
+    [Parameter] public Guid GuildId { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
+    [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
 
     protected string Username = string.Empty;
     protected bool Processing = false;
     private Guid _userId = Guid.Empty;
 
-    protected List<GetGuildsDto> Guilds = [];
+    protected List<GetChannelsDto> Channels = [];
+    protected GetGuildsDto GuildMain = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -43,7 +45,8 @@ public class GuildsBase : ComponentBaseExtends
                 return;
             }
 
-            Guilds = await GetGuilds();
+            GuildMain = await GuildsEndpoints.GetGuild(GuildId);
+            Channels = await GetAllChannels(GuildId);
             StateHasChanged();
         }
         catch (Exception ex)
@@ -52,9 +55,9 @@ public class GuildsBase : ComponentBaseExtends
         }
     }
 
-    private async Task<List<GetGuildsDto>> GetGuilds()
+    private async Task<List<GetChannelsDto>> GetAllChannels(Guid guildId)
     {
-        return await GuildsEndpoints.GetGuilds();
+        return await GuildsEndpoints.GetChannels(guildId);
     }
 
     protected async Task LogOutUser()
@@ -72,61 +75,25 @@ public class GuildsBase : ComponentBaseExtends
         }
     }
 
-    protected async Task OnClickAddNewGuild()
+    protected async Task OnClickAddNewChannel()
     {
         try
         {
             Processing = true;
 
             // open the dialog
-            var dialog = await DialogService.ShowAsync<CreateGuildOrChannelDialog>("Criar novo servidor",
-                new DialogParameters { { "OwnerUserId", _userId } });
+            var dialog = await DialogService.ShowAsync<CreateGuildOrChannelDialog>("Criar novo canal",
+                new DialogParameters { { "GuildMainId", _userId } });
             var result = await dialog.Result;
+
 
             Processing = false;
 
             if (result.Canceled)
                 return;
 
-            Guilds = await GetGuilds();
+            Channels = await GetAllChannels(GuildId);
             StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            await Help.HandleError(DialogService, ex, this);
-        }
-    }
-
-    protected async Task OnClickDelete(GetGuildsDto guildDto)
-    {
-        try
-        {
-            if (guildDto.Id.Equals(Guid.Empty))
-                await Help.ShowAlertDialog(DialogService, "Erro ao tentar deletar servidor!");
-
-            var confirm = await Help.ShowConfirmDialog(DialogService, $"Confirma a exclusão do servidor? {guildDto.Name}");
-
-            if (!confirm)
-                return;
-            
-            await GuildsEndpoints.DeleteGuild(guildDto.Id);
-
-            Snackbar.Add("Servidor deletado com sucesso", Severity.Success);
-
-            Guilds = await GetGuilds();
-            StateHasChanged();
-        }
-        catch (Exception ex)
-        {
-            await Help.HandleError(DialogService, ex, this);
-        }
-    }
-
-    protected async Task OnClickJoin(GetGuildsDto guildDto)
-    {
-        try
-        {
-            NavigationManager.NavigateTo($"/Guilds/{guildDto.Id}");
         }
         catch (Exception ex)
         {
