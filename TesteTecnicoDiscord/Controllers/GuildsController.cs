@@ -32,21 +32,22 @@ public class GuildsController(IGuildsService guildsService, IChannelService chan
             return BadRequest(ex.Message);
         }
     }
-    
-    [HttpGet("getGuilds")]
-    public async Task<IActionResult> GetGuild()
+
+    [HttpGet("getGuild/{guildId:guid}")]
+    public async Task<IActionResult> GetGuild(Guid guildId)
     {
         try
         {
-            List<GetGuildsDto> listResponse = [];
-            var listGuilds = await guildsService.GetAll();
+            GetGuildsDto guildResponse = new GetGuildsDto();
+            var guild = await guildsService.GetById(guildId);
 
-            if (listGuilds is { Count: > 0 })
+            if (guild is null)
             {
-                listResponse = listGuilds.Adapt<List<GetGuildsDto>>();
+                return BadRequest();
             }
 
-            return Ok(listResponse);
+            guildResponse = guild.Adapt<GetGuildsDto>();
+            return Ok(guildResponse);
         }
         catch (Exception ex)
         {

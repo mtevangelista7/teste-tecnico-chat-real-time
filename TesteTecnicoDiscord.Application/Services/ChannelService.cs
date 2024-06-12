@@ -14,7 +14,11 @@ public class ChannelService(IChannelRepository channelRepository, IGuildsReposit
 
     public async Task<Channel> CreateNewChannel(CreateChannelDto channelDto)
     {
+        Console.WriteLine(channelDto.GuildId);
         var guild = await guildsRepository.GetById(channelDto.GuildId);
+
+        if (guild is null)
+            return null;
 
         var channel = new Channel
         {
@@ -23,7 +27,6 @@ public class ChannelService(IChannelRepository channelRepository, IGuildsReposit
         };
 
         await channelRepository.Add(channel);
-
         return channel;
     }
 }

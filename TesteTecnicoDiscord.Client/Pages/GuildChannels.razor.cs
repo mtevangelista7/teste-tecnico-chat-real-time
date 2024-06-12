@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Components;
+﻿using System.Threading.Channels;
+using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Client.CustomComponentBase;
@@ -83,9 +84,8 @@ public class GuildChannelsBase : ComponentBaseExtends
 
             // open the dialog
             var dialog = await DialogService.ShowAsync<CreateGuildOrChannelDialog>("Criar novo canal",
-                new DialogParameters { { "GuildMainId", _userId } });
+                new DialogParameters { { "GuildMainId", GuildId } });
             var result = await dialog.Result;
-
 
             Processing = false;
 
@@ -97,6 +97,17 @@ public class GuildChannelsBase : ComponentBaseExtends
         }
         catch (Exception ex)
         {
+            await Help.HandleError(DialogService, ex, this);
+        }
+    }
+
+    protected async Task JoinChannelMessage(GetChannelsDto getChannelsDto)
+    {
+        try {
+            // join in channel
+
+        }
+        catch (Exception ex) {
             await Help.HandleError(DialogService, ex, this);
         }
     }

@@ -58,7 +58,7 @@
         <MudPaper Height="50dvh">
             <MudGrid Spacing="0">
                 <MudItem xs="12">
-                    <MudPaper Elevation="0" Width="100%" Class="pa-3 d-flex justify-center">
+                    <MudPaper Elevation="0" Width="100%" Height="100%" Class="pa-3 d-flex justify-center">
                         <MudGrid Spacing="3">
 
                             @if (Channels is { Count: > 0 })
@@ -75,8 +75,8 @@
                                                 </MudPaper>
                                             </MudItem>
                                             <MudItem xs="6">
-                                                <MudPaper Class="pa-1" Elevation="3">
-                                                    <MudStack>
+                                                <MudPaper Height="100%" Class="pa-1" Elevation="3">
+                                                    <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" style="height: 100%;">
                                                         <MudText Typo="Typo.h6">
                                                             <b>@channel.Name</b>
                                                         </MudText>

@@ -35,4 +35,9 @@ public class GuildsService(IGuildsRepository guildsRepository, IUserRepository u
     {
         await guildsRepository.Delete(guildId);
     }
+
+    public async Task<Guild> GetById(Guid guildId)
+    {
+        return await guildsRepository.GetById(guildId);
+    }
 }

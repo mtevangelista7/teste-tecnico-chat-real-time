@@ -16,7 +16,7 @@ public interface IGuildsEndpoints
     [Delete("/guilds/{id}")]
     public Task DeleteGuild(Guid id);
 
-    [Get("/guilds/getById/{id}")]
+    [Get("/guilds/getGuild/{id}")]
     public Task<GetGuildsDto> GetGuild(Guid id);
 
     [Get("/guilds/getChannels{id}")]
