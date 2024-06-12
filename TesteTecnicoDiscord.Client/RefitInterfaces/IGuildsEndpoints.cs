@@ -24,4 +24,7 @@ public interface IGuildsEndpoints
 
     [Post("/guilds/{guildId}/channels")]
     public Task CreateNewChannel(Guid guildId, CreateChannelDto request);
+
+    [Post("/guilds/channels/message")]
+    public Task CreateNewMessage(CreateMessageDto createMessageDto);
 }
