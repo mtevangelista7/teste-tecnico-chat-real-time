@@ -19,12 +19,16 @@ public interface IGuildsEndpoints
     [Get("/guilds/getGuild/{id}")]
     public Task<GetGuildsDto> GetGuild(Guid id);
 
-    [Get("/guilds/getChannels{id}")]
+    [Get("/guilds/getChannels/{id}")]
     public Task<List<GetChannelsDto>> GetChannels(Guid id);
 
     [Post("/guilds/{guildId}/channels")]
     public Task CreateNewChannel(Guid guildId, CreateChannelDto request);
 
-    [Post("/guilds/channels/message")]
-    public Task CreateNewMessage(CreateMessageDto createMessageDto);
+    [Get("/guilds/channels/{channelId}/getMessages")]
+    public Task<List<ReceiveMessageDto>> GetAllMessagesFromChannel(Guid channelId);
+
+    [Get("/guilds/channels/{id}")]
+    public Task<GetChannelsDto> GetChannelById(Guid id);
+
 }

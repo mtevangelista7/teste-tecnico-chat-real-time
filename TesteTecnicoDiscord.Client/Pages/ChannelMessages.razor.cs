@@ -17,6 +17,8 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
     [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
 
     protected string MessageInput = string.Empty;
+    protected List<ReceiveMessageDto> ListMessages = [];
+    protected string ChannelName = string.Empty;
 
     private HubConnection _hubConnection;
     private DotNetObjectReference<ChannelMessagesBase> _dotNetRef;
@@ -26,13 +28,26 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
     {
         try
         {
+            var authState = await AuthStateProvider
+                .GetAuthenticationStateAsync();
+
+            _userId = Guid.Parse(authState.User.Claims.FirstOrDefault(claim => claim.Type == "nameid").Value);
+            if (_userId.Equals(Guid.Empty))
+            {
+                NavigationManager.NavigateTo("/login");
+                return;
+            }
+
             _dotNetRef = DotNetObjectReference.Create(this);
             NavigationManager.LocationChanged += HandleLocationChanged;
             await JSRuntime.InvokeVoidAsync("addBeforeUnloadListener", _dotNetRef);
 
-            // connect to the hub and load the messages
             await OpenConnection();
             await LoadMessages();
+            await GetChannelName();
+
+            StateHasChanged();
+            await JSRuntime.InvokeVoidAsync("scrollToBottom", "scrollablePaper");
         }
         catch (Exception ex)
         {
@@ -51,24 +66,24 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
     private async Task OpenConnection()
     {
         _hubConnection = new HubConnectionBuilder()
-            .WithUrl(NavigationManager.ToAbsoluteUri("/chatHub"))
+            .WithUrl(NavigationManager.ToAbsoluteUri("/channelHub"))
             .Build();
 
-        // receive the message from the hub
-        _hubConnection.On<Guid, string, DateTime>("ReceiveMessage", (userId, text, timestamp) =>
+        _hubConnection.On<ReceiveMessageDto>("ReceiveMessage", async (message) =>
         {
-            // TODO: Adicionar na lista de mensagens da tela
+            ListMessages.Add(message);
             StateHasChanged();
+
+            await JSRuntime.InvokeVoidAsync("scrollToBottom", "scrollablePaper");
         });
 
-        // TODO: Colocar o user para entrar no channel
         await _hubConnection.StartAsync();
-        await _hubConnection.SendAsync("JoinChat",);
+        await _hubConnection.SendAsync("JoinChannel", GuildId, ChannelId, _userId);
     }
 
     private async Task LoadMessages()
     {
-        // TODO: Buscar na base todas as mensagens
+        ListMessages = await GuildsEndpoints.GetAllMessagesFromChannel(ChannelId);
         StateHasChanged();
     }
 
@@ -100,28 +115,48 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
 
     private void HandleLocationChanged(object sender, LocationChangedEventArgs e)
     {
-        // Chame seu método aqui
-        OnPageExit();
+        Task.Run(async () => await OnPageExit());
     }
 
     [JSInvokable]
-    public Task HandleBeforeUnload()
+    public async Task HandleBeforeUnload()
     {
-        // Chame seu método aqui
-        OnPageExit();
-        return Task.CompletedTask;
+        await OnPageExit();
     }
 
-    private void OnPageExit()
+    private async Task OnPageExit()
     {
-        // Coloque sua lógica aqui
-        Console.WriteLine("Usuário está saindo da página");
+        await _hubConnection.SendAsync("LeaveChannel", GuildId, ChannelId, _userId);
     }
 
     public void Dispose()
     {
         NavigationManager.LocationChanged -= HandleLocationChanged;
-        _ = JSRuntime.InvokeVoidAsync("removeBeforeUnloadListener", _dotNetRef);
+        DisposeAsync();
+    }
+
+    private async void DisposeAsync()
+    {
+        await JSRuntime.InvokeVoidAsync("removeBeforeUnloadListener", _dotNetRef);
         _dotNetRef?.Dispose();
+        await OnPageExit();
+    }
+
+    protected async Task OnClickLeave()
+    {
+        try
+        {
+            NavigationManager.NavigateTo($"/Guilds/{GuildId}");
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
+        }
+    }
+
+    private async Task GetChannelName()
+    {
+        var channel = await GuildsEndpoints.GetChannelById(ChannelId);
+        ChannelName = channel.Name;
     }
 }

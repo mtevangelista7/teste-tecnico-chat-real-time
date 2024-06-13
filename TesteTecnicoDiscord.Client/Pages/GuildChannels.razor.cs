@@ -105,7 +105,7 @@ public class GuildChannelsBase : ComponentBaseExtends
     {
         try {
             // join in channel
-
+            NavigationManager.NavigateTo($"/Guilds/{GuildId}/{getChannelsDto.Id}");
         }
         catch (Exception ex) {
             await Help.HandleError(DialogService, ex, this);

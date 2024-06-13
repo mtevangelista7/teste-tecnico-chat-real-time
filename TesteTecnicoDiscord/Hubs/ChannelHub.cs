@@ -1,35 +1,94 @@
 ﻿using Microsoft.AspNetCore.SignalR;
+using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Application.Interfaces.Services;
+using TesteTecnicoDiscord.Domain.Entities;
 
 namespace TesteTecnicoDiscord.Hubs;
 
-public class ChannelHub : Hub
+public class ChannelHub(IUserService userService, IMessageService messageService) : Hub
 {
-    public async Task SendMessageToChannel(Guid serverId, Guid channelId, string user, string message)
+    private static readonly Dictionary<string, HashSet<string>> ConnectionGroups = new();
+
+    public async Task SendMessage(CreateMessageDto messageDto)
     {
-        string groupName = $"{serverId.ToString()}:{channelId.ToString()}";
-        await Clients.Group(groupName).SendAsync("ReceiveMessage", user, message);
+        if (messageDto is null)
+            throw new NullReferenceException();
+
+        var newMessage = new Message()
+        {
+            ChannelId = messageDto.ChannelId,
+            Content = messageDto.Content,
+            GuildId = messageDto.GuildId,
+            Timestamp = DateTime.Now,
+            UserId = messageDto.UserId
+        };
+
+        newMessage = await messageService.CreateNewMessage(newMessage);
+
+        var user = await userService.GetUserById(newMessage.UserId);
+
+        if (user is null)
+            throw new NullReferenceException();
+
+        var receiveMessage = new ReceiveMessageDto()
+        {
+            Id = newMessage.Id,
+            Content = newMessage.Content,
+            OwnerUsername = user.Username,
+            Timestamp = newMessage.Timestamp
+        };
+
+        await Clients.Group(messageDto.ChannelId.ToString()).SendAsync("ReceiveMessage", receiveMessage);
     }
 
-    /// <summary>
-    /// here we join the user to a channel group
-    /// </summary>
-    /// <param name="serverId"></param>
-    /// <param name="channelId"></param>
-    public async Task JoinChannel(Guid serverId, Guid channelId)
+    public async Task JoinChannel(Guid guildId, Guid channelId, Guid userId)
     {
-        string groupName = $"{serverId.ToString()}:{channelId.ToString()}";
-        await Groups.AddToGroupAsync(Context.ConnectionId, groupName);
+        var user = await userService.GetUserById(userId);
+        var messageDto = new CreateMessageDto()
+        {
+            ChannelId = channelId,
+            Content = $"O usuário {user.Username} entrou do chat",
+            GuildId = guildId,
+            Timestamp = DateTime.Now,
+            UserId = user.Id
+        };
+
+        if (!ConnectionGroups.ContainsKey(Context.ConnectionId))
+        {
+            ConnectionGroups[Context.ConnectionId] = [];
+        }
+
+        ConnectionGroups[Context.ConnectionId].Add(channelId.ToString());
+
+        await Groups.AddToGroupAsync(Context.ConnectionId, channelId.ToString());
+        await SendMessage(messageDto);
     }
 
-    /// <summary>
-    /// here we remove the user from a channel group
-    /// </summary>
-    /// <param name="serverId"></param>
-    /// <param name="channelId"></param>
-    /// TODO: Aqui eu não sei bem se isso vai funcionar, visto que o usuário pode estar em vários canais ao mesmo tempo
-    public async Task LeaveChannel(Guid serverId, Guid channelId)
+    public async Task LeaveChannel(Guid guildId, Guid channelId, Guid userId)
     {
-        string groupName = $"{serverId.ToString()}:{channelId.ToString()}";
-        await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+        var groupName = channelId.ToString();
+        if (ConnectionGroups.ContainsKey(Context.ConnectionId) &&
+            ConnectionGroups[Context.ConnectionId].Contains(groupName))
+        {
+            var user = await userService.GetUserById(userId);
+            var messageDto = new CreateMessageDto()
+            {
+                ChannelId = channelId,
+                Content = $"O usuário {user.Username} saiu do chat",
+                GuildId = guildId,
+                Timestamp = DateTime.Now,
+                UserId = user.Id
+            };
+
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
+            ConnectionGroups[Context.ConnectionId].Remove(groupName);
+
+            if (ConnectionGroups[Context.ConnectionId].Count == 0)
+            {
+                ConnectionGroups.Remove(Context.ConnectionId);
+            }
+
+            await SendMessage(messageDto);
+        }
     }
 }

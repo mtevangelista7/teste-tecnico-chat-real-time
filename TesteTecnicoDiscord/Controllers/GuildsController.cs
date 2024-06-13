@@ -10,7 +10,11 @@ namespace TesteTecnicoDiscord.Controllers;
 
 [ApiController]
 [Route("[controller]")]
-public class GuildsController(IGuildsService guildsService, IChannelService channelService) : ControllerBase
+public class GuildsController(
+    IGuildsService guildsService,
+    IChannelService channelService,
+    IMessageService messageService,
+    IUserService userService) : ControllerBase
 {
     [HttpGet("getGuilds")]
     public async Task<IActionResult> GetGuilds()
@@ -88,7 +92,7 @@ public class GuildsController(IGuildsService guildsService, IChannelService chan
         }
     }
 
-    [HttpGet("getChannels{guildId:guid}")]
+    [HttpGet("getChannels/{guildId:guid}")]
     public async Task<IActionResult> GetAllGuildsRoms(Guid guildId)
     {
         try
@@ -133,7 +137,36 @@ public class GuildsController(IGuildsService guildsService, IChannelService chan
         throw new NotImplementedException();
     }
 
-    // Não vou incluir por enquanto, pois o signalr já faz isso no hub porém vou reavaliar a lógica
-    // POST	/guilds/{guildId}/channels/{channelId}/messages
-    // GET	/guilds/{guildId}/channels/{channelId}
+    [HttpGet("channels/{channelId:guid}/getMessages")]
+    public async Task<IActionResult> GetMessagesFromChannel(Guid channelId)
+    {
+        try
+        {
+            List<ReceiveMessageDto> receiveMessagesDto = [];
+            var messages = await messageService.GetMessagesFromChannel(channelId);
+
+            if (messages is not { Count: > 0 }) return Ok(receiveMessagesDto);
+
+            receiveMessagesDto = messages.Adapt<List<ReceiveMessageDto>>();
+            receiveMessagesDto.ForEach(async x => x.OwnerUsername = (await userService.GetUserById(x.UserId)).Username);
+            return Ok(receiveMessagesDto);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("/guilds/channels/{id:guid}")]
+    public async Task<IActionResult> GetChannel(Guid id)
+    {
+        try
+        {
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
 }

@@ -11,7 +11,7 @@ public class HomeBase : ComponentBaseExtends
         {
             var authState = await AuthStateProvider
                 .GetAuthenticationStateAsync();
-
+                
             var user = authState.User;
 
             if (user.Identity is not null && user.Identity.IsAuthenticated)

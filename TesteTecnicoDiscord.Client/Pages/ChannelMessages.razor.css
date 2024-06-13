@@ -1,0 +1,5 @@
+::deep .bgimage {
+    background-image: url('img/bgdiscord.jpg');
+    background-size: cover;
+    background-position: center;
+}
