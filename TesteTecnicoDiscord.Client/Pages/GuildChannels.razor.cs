@@ -111,4 +111,16 @@ public class GuildChannelsBase : ComponentBaseExtends
             await Help.HandleError(DialogService, ex, this);
         }
     }
+    
+    protected async Task OnClickBackToGuilds()
+    {
+        try
+        {
+            NavigationManager.NavigateTo("/Guilds");
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
+        }
+    }
 }

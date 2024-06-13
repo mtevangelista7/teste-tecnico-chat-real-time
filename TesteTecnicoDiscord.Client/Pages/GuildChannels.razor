@@ -6,59 +6,79 @@
 @if (!GuildId.Equals(Guid.Empty))
 {
     <div>
-        <MudAppBar Color="Color.Primary" Fixed="false" Dense="true">
-            <MudIconButton Icon="@Icons.Material.Filled.Pix" Color="Color.Inherit" Edge="Edge.Start"/>
-            <MudSpacer/>
-            <MudStack AlignItems="AlignItems.Center" Row="true">
-                <MudText>@Username</MudText>
-                <MudIconButton OnClick="LogOutUser" Icon="@Icons.Material.Filled.Logout" Color="Color.Inherit"/>
-            </MudStack>
-        </MudAppBar>
+        <div class="bgimage">
 
-        <MudPaper Class="mud-theme-primary d-flex align-center justify-center" Height="calc(50dvh - 48px)">
-            <MudGrid Spacing="0">
-                <MudItem xs="12">
-                    <MudGrid Spacing="0" Justify="Justify.Center">
-                        <MudItem xs="12" sm="8" md="6">
-                            <MudStack>
-                                <MudText Align="Align.Center" Class="white-text" Typo="Typo.h4">
-                                    Canais do servidor: @GuildMain.Name
-                                </MudText>
+            <MudAppBar Elevation="10" Color="Color.Transparent" Fixed="false" Dense="true">
 
-                                <MudText Align="Align.Center">
-                                    um texto legal aqui
-                                </MudText>
+                <MudStack AlignItems="AlignItems.Center" Row="true">
+                    <MudIconButton OnClick="OnClickBackToGuilds" Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Dark"/>
+                    <MudText Color="Color.Dark">
+                        <b>Servidores</b>
+                    </MudText>
+                </MudStack>
 
-                                <MudTextField T="string"
-                                              Margin="Margin.Dense"
-                                              Placeholder="Search"
-                                              Variant="Variant.Outlined"
-                                              Adornment="Adornment.End"
-                                              AdornmentIcon="@Icons.Material.Filled.Search"
-                                              AdornmentColor="Color.Tertiary"/>
+                <MudSpacer/>
 
-                                <MudButton Disabled="@Processing" OnClick="OnClickAddNewChannel" Size="Size.Large" Variant="Variant.Filled" Color="Color.Success">
-                                    @if (Processing)
-                                    {
-                                        <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
-                                        <MudText Class="ms-2">Processando</MudText>
-                                    }
-                                    else
-                                    {
-                                        <MudText>Criar novo canal de texto</MudText>
-                                    }
-                                </MudButton>
-                            </MudStack>
-                        </MudItem>
-                    </MudGrid>
-                </MudItem>
-            </MudGrid>
-        </MudPaper>
+                <MudStack AlignItems="AlignItems.Center" Row="true">
+                    <MudText Color="Color.Dark">
+                        <b>@Username</b>
+                    </MudText>
+                    <MudIconButton OnClick="LogOutUser" Icon="@Icons.Material.Filled.Logout" Color="Color.Dark"/>
+                </MudStack>
+
+            </MudAppBar>
+
+            <MudPaper Style="background: transparent" Class="d-flex align-center justify-center" Height="calc(50dvh - 48px)">
+                <MudPaper Elevation="10" Width="70%" Class="d-flex rounded-lg align-center justify-center white-text py-8">
+                    <MudContainer MaxWidth="MaxWidth.Large">
+
+                        <MudGrid Spacing="0">
+                            <MudItem xs="12">
+                                <MudGrid Spacing="0" Justify="Justify.Center">
+                                    <MudItem xs="12" sm="10" md="8">
+                                        <MudStack Spacing="4">
+                                            <MudText Align="Align.Center" Class="white-text signika-font-title" Typo="Typo.h4">
+                                                <b>@GuildMain.Name</b>
+                                            </MudText>
+
+                                            <MudText Align="Align.Center" Class="white-text signika-font-title">
+                                                Escolha um e se divirta :)
+                                            </MudText>
+
+                                            <MudTextField T="string"
+                                                          Margin="Margin.Dense"
+                                                          Class="rounded-xl"
+                                                          Placeholder="Procurar"
+                                                          Variant="Variant.Outlined"
+                                                          Adornment="Adornment.End"
+                                                          AdornmentIcon="@Icons.Material.Filled.Search"
+                                                          AdornmentColor="Color.Tertiary"/>
+
+                                            <MudButton Disabled="@Processing" Class="rounded-xl" OnClick="OnClickAddNewChannel" Size="Size.Large" Variant="Variant.Filled" Color="Color.Success">
+                                                @if (Processing)
+                                                {
+                                                    <MudProgressCircular Class="ms-n1" Size="Size.Small" Indeterminate="true"/>
+                                                    <MudText Class="ms-2">Processando</MudText>
+                                                }
+                                                else
+                                                {
+                                                    <MudText>Criar novo canal de texto</MudText>
+                                                }
+                                            </MudButton>
+                                        </MudStack>
+                                    </MudItem>
+                                </MudGrid>
+                            </MudItem>
+                        </MudGrid>
+                    </MudContainer>
+                </MudPaper>
+            </MudPaper>
+        </div>
 
         <MudPaper Height="50dvh">
             <MudGrid Spacing="0">
                 <MudItem xs="12">
-                    <MudPaper Elevation="0" Width="100%" Height="100%" Class="pa-3 d-flex justify-center">
+                    <MudPaper Elevation="0" Width="100%" Height="100%" Class="pa-10 d-flex justify-center">
                         <MudGrid Spacing="3">
 
                             @if (Channels is { Count: > 0 })
@@ -67,15 +87,17 @@
                                 {
                                     <MudItem xs="4">
                                         <MudGrid Spacing="2">
-                                            <MudItem xs="3">
-                                                <MudPaper Class="pa-1 d-flex align-center justify-center mud-theme-primary" Height="100%" Elevation="3">
-                                                    <MudAvatar Size="Size.Large" Rounded="true" Color="Color.Tertiary" Variant="Variant.Outlined">
-                                                        <MudIcon Icon="@Icons.Material.Filled.Person"/>
-                                                    </MudAvatar>
+                                            <MudItem xs="12">
+                                                <MudPaper Class="pa-1 d-flex align-center justify-center mud-theme-primary" Height="170px" Elevation="10">
+                                                    <MudBadge Color="Color.Success" Overlap="true" Bordered="true">
+                                                        <MudAvatar Size="Size.Large" Rounded="true" Color="Color.Tertiary" Variant="Variant.Outlined">
+                                                            <MudIcon Icon="@Icons.Material.Filled.Chat"/>
+                                                        </MudAvatar>
+                                                    </MudBadge>
                                                 </MudPaper>
                                             </MudItem>
-                                            <MudItem xs="6">
-                                                <MudPaper Height="100%" Class="pa-1" Elevation="3">
+                                            <MudItem xs="12">
+                                                <MudPaper Height="100%" Class="pa-1" Elevation="10">
                                                     <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" style="height: 100%;">
                                                         <MudText Typo="Typo.h6">
                                                             <b>@channel.Name</b>
@@ -83,9 +105,9 @@
                                                     </MudStack>
                                                 </MudPaper>
                                             </MudItem>
-                                            <MudItem xs="3">
+                                            <MudItem xs="12">
                                                 <MudStack Justify="Justify.Center" Style="height: 100%">
-                                                    <MudButton OnClick="e => JoinChannelMessage(channel)" Variant="Variant.Outlined" Color="Color.Success">Entrar</MudButton>
+                                                    <MudButton OnClick="e => JoinChannelMessage(channel)" Size="Size.Large" Variant="Variant.Outlined" Color="Color.Success">Entrar</MudButton>
                                                 </MudStack>
                                             </MudItem>
                                         </MudGrid>

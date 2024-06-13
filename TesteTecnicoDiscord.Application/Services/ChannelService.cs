@@ -29,4 +29,9 @@ public class ChannelService(IChannelRepository channelRepository, IGuildsReposit
         await channelRepository.Add(channel);
         return channel;
     }
+
+    public async Task<Channel> GetChannelById(Guid channelId)
+    {
+        return await channelRepository.GetById(channelId);
+    }
 }

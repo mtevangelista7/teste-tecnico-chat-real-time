@@ -162,7 +162,13 @@ public class GuildsController(
     {
         try
         {
-            return Ok();
+            var channelResponse = new GetChannelsDto();
+            var channel = await channelService.GetChannelById(id);
+
+            if (channel is null) return NotFound();
+
+            channelResponse = channel.Adapt<GetChannelsDto>();
+            return Ok(channelResponse);
         }
         catch (Exception ex)
         {
