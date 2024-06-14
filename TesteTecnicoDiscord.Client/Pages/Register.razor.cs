@@ -22,7 +22,7 @@ namespace TesteTecnicoDiscord.Client.Pages
         protected string Day;
 
         protected CreateUserDto UserDto = new()
-            { BirthDate = null, Email = "", Name = "", Password = "", Username = "" };
+            { BirthDate = null, Name = "", Password = "", Username = "" };
 
         private bool _isShow;
         protected InputType PasswordInput = InputType.Password;
@@ -124,7 +124,7 @@ namespace TesteTecnicoDiscord.Client.Pages
         {
             try
             {
-                UserDto = new() { BirthDate = null, Email = "", Name = "", Password = "", Username = "" };
+                UserDto = new() { BirthDate = null, Name = "", Password = "", Username = "" };
                 Year = "";
                 Month = "";
                 Day = "";

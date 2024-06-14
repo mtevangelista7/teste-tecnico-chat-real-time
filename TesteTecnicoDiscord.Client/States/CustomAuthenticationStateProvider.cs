@@ -23,8 +23,7 @@ public class CustomAuthenticationStateProvider(ILocalStorageService localStorage
         // get all claims
         var allClaims = GetClaims(jwtSecurityToken);
 
-        if (string.IsNullOrWhiteSpace(allClaims.email)
-            || string.IsNullOrWhiteSpace(allClaims.userId)
+        if (string.IsNullOrWhiteSpace(allClaims.userId)
             || string.IsNullOrWhiteSpace(allClaims.username))
             return new AuthenticationState(_anonymousUser);
 
@@ -33,13 +32,12 @@ public class CustomAuthenticationStateProvider(ILocalStorageService localStorage
         return new AuthenticationState(principalClaim);
     }
 
-    private static (string userId, string username, string email) GetClaims(JwtSecurityToken token)
+    private static (string userId, string username) GetClaims(JwtSecurityToken token)
     {
         var userId = token.Claims.FirstOrDefault(claim => claim.Type == "nameid").Value;
         var username = token.Claims.FirstOrDefault(claim => claim.Type == "unique_name").Value;
-        var email = token.Claims.FirstOrDefault(claim => claim.Type == "email").Value;
 
-        return (userId, username, email);
+        return (userId, username);
     }
 
     public async Task UpdateAuthenticationStateAsync(string tokenString)
@@ -57,8 +55,7 @@ public class CustomAuthenticationStateProvider(ILocalStorageService localStorage
 
         var allClaims = GetClaims(jwtSecurityToken);
 
-        if (string.IsNullOrWhiteSpace(allClaims.email)
-            || string.IsNullOrWhiteSpace(allClaims.userId)
+        if (string.IsNullOrWhiteSpace(allClaims.userId)
             || string.IsNullOrWhiteSpace(allClaims.username))
             return;
 

@@ -24,7 +24,6 @@ public class AuthService(IUserRepository userRepository, IConfiguration configur
         // create user
         var user = new User
         {
-            Email = request.Email,
             Name = request.Name,
             Username = request.Username,
             BirthDate = (DateTime)request.BirthDate!,
@@ -83,8 +82,7 @@ public class AuthService(IUserRepository userRepository, IConfiguration configur
         List<Claim> claims =
         [
             new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-            new Claim(ClaimTypes.Name, user.Name),
-            new Claim(ClaimTypes.Email, user.Email)
+            new Claim(ClaimTypes.Name, user.Username),
         ];
 
         // get the secrete key

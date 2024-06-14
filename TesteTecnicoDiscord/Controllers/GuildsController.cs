@@ -1,5 +1,6 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;
@@ -175,6 +176,21 @@ public class GuildsController(
 
             var channelResponse = channel.Adapt<GetChannelsDto>();
             return Ok(channelResponse);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("/{guildId:guid}/{userId:guid}/addUser")]
+    public async Task<IActionResult> AddUserToGuild(Guid guildId, Guid userId)
+    {
+        try
+        {
+            await guildsService.AddUserToGuild(userId, guildId);
+            
+            return NoContent();
         }
         catch (Exception ex)
         {

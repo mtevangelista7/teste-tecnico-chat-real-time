@@ -109,6 +109,8 @@ public class GuildChannelsBase : ComponentBaseExtends
     {
         try
         {
+            // TODO: Aqui é preciso adicionar o fluxo de associar o user com o canal
+
             // join in channel
             NavigationManager.NavigateTo($"/Guilds/{GuildId}/{getChannelsDto.Id}");
         }

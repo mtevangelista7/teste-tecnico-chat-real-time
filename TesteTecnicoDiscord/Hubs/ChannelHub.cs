@@ -13,17 +13,8 @@ public class ChannelHub(IUserService userService, IMessageService messageService
     {
         if (messageDto is null)
             throw new NullReferenceException();
-
-        var newMessage = new Message()
-        {
-            ChannelId = messageDto.ChannelId,
-            Content = messageDto.Content,
-            GuildId = messageDto.GuildId,
-            Timestamp = DateTime.Now,
-            UserId = messageDto.UserId
-        };
-
-        newMessage = await messageService.Add(newMessage);
+        
+        var newMessage = await messageService.Add(messageDto);
 
         var user = await userService.GetById(newMessage.UserId);
 

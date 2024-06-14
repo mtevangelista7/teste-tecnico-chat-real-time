@@ -24,6 +24,29 @@ public class GuildsRepository(AppDbContext context) : EFRepository<Guild>(contex
         return guild;
     }
 
+    public async Task AddUserToGuild(Guid userId, Guid guildId)
+    {
+        await using var transaction = await context.Database.BeginTransactionAsync();
+
+        var user = await context.Users.FindAsync(userId);
+        var guild = context.Guilds.Include(g => g.GuildUsers).FirstOrDefault(g => g.Id == guildId);
+
+        if (user == null || guild == null)
+        {
+            throw new Exception("User or Guild not found");
+        }
+
+        var isUserInGuild = guild.GuildUsers.Any(gu => gu.UserId == userId);
+        
+        if (!isUserInGuild)
+        {
+            guild.GuildUsers.Add(new GuildUser { UserId = user.Id, GuildId = guild.Id, User = user, Guild = guild});
+            guild.MembersCount++;
+
+            await context.SaveChangesAsync();
+        }
+    }
+
     public async Task<int> GetGuildCountFromUser(Guid userId)
     {
         return await context.Guilds.CountAsync(x => x.OwnerUser.Id == userId);

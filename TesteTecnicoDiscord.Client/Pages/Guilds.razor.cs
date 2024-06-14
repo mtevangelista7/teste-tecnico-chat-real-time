@@ -131,6 +131,7 @@ public class GuildsBase : ComponentBaseExtends
     {
         try
         {
+            await GuildsEndpoints.AddUserToGuild(guildDto.Id, _userId);
             NavigationManager.NavigateTo($"/Guilds/{guildDto.Id}");
         }
         catch (Exception ex)

@@ -7,5 +7,6 @@ namespace TesteTecnicoDiscord.Application.Interfaces.Services;
 public interface IGuildsService : IGenericService<Guild>
 {
     Task<Guild> CreateNewGuild(CreateGuildDto guild);
+    Task AddUserToGuild(Guid userId, Guid guildId);
     Task<int> GetGuildCountFromUser(Guid userId);
 }

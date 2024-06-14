@@ -19,7 +19,7 @@ public class EFRepository<T> : IRepository<T> where T : EntityBase
 
     public async Task<List<T>> GetAll()
     {
-        return await _dbSet.AsNoTracking().ToListAsync();
+        return await _dbSet.ToListAsync();
     }
 
     public async Task<T> GetById(Guid id)

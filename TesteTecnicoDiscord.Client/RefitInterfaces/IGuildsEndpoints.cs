@@ -33,4 +33,8 @@ public interface IGuildsEndpoints
 
     [Delete("/guilds/{guildId}/channels/{channelId}/messages/{messageId}")]
     public Task DeleteMessage(Guid guildId, Guid channelId, Guid messageId);
+
+    [Get("/{guildId}/{userId}/addUser")]
+    public Task AddUserToGuild(Guid guildId, Guid userId);
+
 }

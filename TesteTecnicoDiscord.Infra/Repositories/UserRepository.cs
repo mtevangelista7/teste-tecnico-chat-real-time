@@ -10,6 +10,6 @@ public class UserRepository(AppDbContext context) : EFRepository<User>(context),
 {
     public async Task<User> GetByUsername(string username)
     {
-        return await context.Users.FirstOrDefaultAsync(x => x.Username == username);
+        return (await context.Users.AsNoTracking().FirstOrDefaultAsync(x => x.Username == username))!;
     }
 }

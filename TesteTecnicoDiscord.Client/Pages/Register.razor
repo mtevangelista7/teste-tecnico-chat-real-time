@@ -19,20 +19,7 @@
                                     <MudItem xs="12">
                                         <MudText Typo="Typo.h6" Align="Align.Center">Criar uma conta</MudText>
                                     </MudItem>
-
-                                    <MudItem xs="12">
-                                        <MudStack Spacing="0" Row="false">
-                                            <MudText Color="Color.Secondary">E-mail</MudText>
-                                            <MudTextField Margin="Margin.Dense"
-                                                          @bind-Value="UserDto.Email"
-                                                          T="string"
-                                                          MaxLength="250"
-                                                          Variant="Variant.Outlined">
-                                            </MudTextField>
-                                            <ValidationMessage For="@(() => UserDto.Email)"/>
-                                        </MudStack>
-                                    </MudItem>
-
+                                    
                                     <MudItem xs="12">
                                         <MudStack Spacing="0" Row="false">
                                             <MudText Color="Color.Secondary">Nome Exibido</MudText>

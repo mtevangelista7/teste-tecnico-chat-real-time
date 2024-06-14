@@ -30,6 +30,11 @@ public class GuildsService(
         return newGuild;
     }
 
+    public async Task AddUserToGuild(Guid userId, Guid guildId)
+    {
+        await guildsRepository.AddUserToGuild(userId, guildId);
+    }
+
     public async Task<int> GetGuildCountFromUser(Guid userId)
     {
         return await guildsRepository.GetGuildCountFromUser(userId);
