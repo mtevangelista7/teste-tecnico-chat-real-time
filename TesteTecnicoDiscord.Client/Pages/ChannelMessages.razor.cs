@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Routing;
+using Microsoft.AspNetCore.Components.Web;
 using Microsoft.AspNetCore.SignalR.Client;
 using Microsoft.JSInterop;
 using TesteTecnicoDiscord.Application.Dtos;
@@ -158,5 +159,18 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
     {
         var channel = await GuildsEndpoints.GetChannelById(ChannelId);
         ChannelName = channel.Name;
+    }
+
+    protected async Task HandleClickEnter(KeyboardEventArgs eventArgs)
+    {
+        try
+        {
+            if (eventArgs.Key is "Enter" or "Backspace")
+                await SendMessage();
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
+        }
     }
 }

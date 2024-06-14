@@ -19,6 +19,7 @@ public class GuildsBase : ComponentBaseExtends
     private Guid _userId = Guid.Empty;
 
     protected List<GetGuildsDto> Guilds = [];
+    protected List<GetGuildsDto> FilteredGuilds = [];
 
     protected override async Task OnInitializedAsync()
     {
@@ -44,6 +45,7 @@ public class GuildsBase : ComponentBaseExtends
             }
 
             Guilds = await GetGuilds();
+            FilteredGuilds = Guilds;
             StateHasChanged();
         }
         catch (Exception ex)
@@ -115,6 +117,7 @@ public class GuildsBase : ComponentBaseExtends
             Snackbar.Add("Servidor deletado com sucesso", Severity.Success);
 
             Guilds = await GetGuilds();
+            FilteredGuilds = Guilds;
             StateHasChanged();
         }
         catch (Exception ex)
@@ -133,5 +136,14 @@ public class GuildsBase : ComponentBaseExtends
         {
             await Help.HandleError(DialogService, ex, this);
         }
+    }
+
+    protected async Task FilterGuilds(string param)
+    {
+        FilteredGuilds = string.IsNullOrWhiteSpace(param)
+            ? Guilds
+            : Guilds.FindAll(c => c.Name.Contains(param, StringComparison.OrdinalIgnoreCase));
+
+        StateHasChanged();
     }
 }

@@ -17,10 +17,11 @@ public class GuildChannelsBase : ComponentBaseExtends
     [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
 
     protected string Username = string.Empty;
-    protected bool Processing = false;
+    protected bool Processing;
     private Guid _userId = Guid.Empty;
 
     protected List<GetChannelsDto> Channels = [];
+    protected List<GetChannelsDto> FilteredChannels = [];
     protected GetGuildsDto GuildMain = new();
 
     protected override async Task OnInitializedAsync()
@@ -48,6 +49,8 @@ public class GuildChannelsBase : ComponentBaseExtends
 
             GuildMain = await GuildsEndpoints.GetGuild(GuildId);
             Channels = await GetAllChannels(GuildId);
+
+            FilteredChannels = Channels;
             StateHasChanged();
         }
         catch (Exception ex)
@@ -103,15 +106,17 @@ public class GuildChannelsBase : ComponentBaseExtends
 
     protected async Task JoinChannelMessage(GetChannelsDto getChannelsDto)
     {
-        try {
+        try
+        {
             // join in channel
             NavigationManager.NavigateTo($"/Guilds/{GuildId}/{getChannelsDto.Id}");
         }
-        catch (Exception ex) {
+        catch (Exception ex)
+        {
             await Help.HandleError(DialogService, ex, this);
         }
     }
-    
+
     protected async Task OnClickBackToGuilds()
     {
         try
@@ -122,5 +127,14 @@ public class GuildChannelsBase : ComponentBaseExtends
         {
             await Help.HandleError(DialogService, ex, this);
         }
+    }
+
+    protected async Task FilterChannels(string param)
+    {
+        FilteredChannels = string.IsNullOrWhiteSpace(param)
+            ? Channels
+            : Channels.FindAll(c => c.Name.Contains(param, StringComparison.OrdinalIgnoreCase));
+
+        StateHasChanged();
     }
 }

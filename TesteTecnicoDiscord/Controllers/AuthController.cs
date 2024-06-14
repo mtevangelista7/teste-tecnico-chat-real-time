@@ -13,7 +13,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         try
         {
-            string token = await authService.Register(request);
+            var token = await authService.Register(request);
             return string.IsNullOrWhiteSpace(token) ? BadRequest() : Ok(token);
         }
         catch (Exception ex)
@@ -27,7 +27,7 @@ public class AuthController(IAuthService authService) : ControllerBase
     {
         try
         {
-            string token = await authService.Login(request);
+            var token = await authService.Login(request);
             return string.IsNullOrWhiteSpace(token) ? BadRequest() : Ok(token);
         }
         catch (Exception ex)

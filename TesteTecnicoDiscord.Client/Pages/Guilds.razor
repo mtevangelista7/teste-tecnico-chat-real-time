@@ -12,17 +12,17 @@
             <MudSpacer/>
 
             <MudStack AlignItems="AlignItems.Center" Row="true">
-                <button @onclick="e => Help.ShowUserProfileDialog(DialogService)">
-                    <MudText Color="Color.Dark">
+                <MudButton Variant="Variant.Filled" Color="Color.Dark" OnClick="_ => Help.ShowUserProfileDialog(DialogService)">
+                    <MudText Color="Color.Tertiary">
                         <b>@Username</b>
                     </MudText>
-                </button>
+                </MudButton>
                 <MudIconButton OnClick="LogOutUser" Icon="@Icons.Material.Filled.Logout" Color="Color.Dark"/>
             </MudStack>
 
         </MudAppBar>
 
-        <MudPaper Style="background: transparent" Class="d-flex align-center justify-center" Height="calc(50dvh - 48px)">
+        <MudPaper Style="background: transparent" Class="d-flex align-center justify-center" Height="calc(60dvh - 48px)">
             <MudPaper Elevation="10" Width="70%" Class="d-flex rounded-lg align-center justify-center white-text py-8">
                 <MudContainer MaxWidth="MaxWidth.Large">
 
@@ -46,7 +46,9 @@
                                                       Variant="Variant.Outlined"
                                                       Adornment="Adornment.End"
                                                       AdornmentIcon="@Icons.Material.Filled.Search"
-                                                      AdornmentColor="Color.Tertiary"/>
+                                                      AdornmentColor="Color.Tertiary"
+                                                      Immediate="true"
+                                                      ValueChanged="e => FilterGuilds(e)" />
 
                                         <MudButton Disabled="@Processing" Class="rounded-xl" OnClick="OnClickAddNewGuild" Size="Size.Large" Variant="Variant.Filled" Color="Color.Success">
                                             @if (Processing)
@@ -69,17 +71,17 @@
         </MudPaper>
     </div>
 
-    <MudPaper Height="50dvh">
+    <MudPaper Height="40dvh">
         <MudGrid Spacing="0">
             <MudItem xs="12">
                 <MudPaper Elevation="0" Width="100%" Height="100%" Class="pa-10 d-flex justify-center">
                     <MudGrid Spacing="3">
 
-                        @if (Guilds is { Count: > 0 })
+                        @if (FilteredGuilds is { Count: > 0 })
                         {
-                            @foreach (var guild in Guilds)
+                            @foreach (var guild in FilteredGuilds)
                             {
-                                <MudItem xs="4">
+                                <MudItem xs="4" sm="4" md="3">
                                     <MudGrid Spacing="2">
                                         <MudItem xs="12">
                                             <MudPaper Class="pa-1 d-flex align-center justify-center mud-theme-primary" Height="170px" Elevation="10">
@@ -95,13 +97,13 @@
                                                 <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" style="height: 100%;">
 
                                                     <MudStack>
-                                                        <MudText Typo="Typo.h6">
+                                                        <MudText Align="Align.Center" Typo="Typo.h6">
                                                             <b>@guild.Name</b>
                                                         </MudText>
 
                                                         <MudStack>
-                                                            <MudText Typo="Typo.subtitle1"><b>@guild.MembersCount</b> membro(s)</MudText>
-                                                            <MudText Typo="Typo.subtitle1"><b>@guild.MessagesCount</b> mensagem(s)</MudText>
+                                                            <MudText Align="Align.Center" Typo="Typo.subtitle1"><b>@guild.MembersCount</b> membro(s)</MudText>
+                                                            <MudText Align="Align.Center" Typo="Typo.subtitle1"><b>@guild.MessagesCount</b> mensagem(s)</MudText>
                                                         </MudStack>
                                                     </MudStack>
 

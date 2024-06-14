@@ -1,13 +1,12 @@
 ﻿using Mapster;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;
-using TesteTecnicoDiscord.Client.Helper;
-using TesteTecnicoDiscord.Domain.Entities;
-using TesteTecnicoDiscord.Infra.Interfaces;
 
 namespace TesteTecnicoDiscord.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("[controller]")]
 public class GuildsController(
@@ -162,12 +161,11 @@ public class GuildsController(
     {
         try
         {
-            var channelResponse = new GetChannelsDto();
             var channel = await channelService.GetChannelById(id);
 
             if (channel is null) return NotFound();
 
-            channelResponse = channel.Adapt<GetChannelsDto>();
+            var channelResponse = channel.Adapt<GetChannelsDto>();
             return Ok(channelResponse);
         }
         catch (Exception ex)
