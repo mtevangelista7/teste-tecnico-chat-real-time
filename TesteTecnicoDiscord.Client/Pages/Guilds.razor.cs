@@ -104,11 +104,12 @@ public class GuildsBase : ComponentBaseExtends
             if (guildDto.Id.Equals(Guid.Empty))
                 await Help.ShowAlertDialog(DialogService, "Erro ao tentar deletar servidor!");
 
-            var confirm = await Help.ShowConfirmDialog(DialogService, $"Confirma a exclusão do servidor? {guildDto.Name}");
+            var confirm =
+                await Help.ShowConfirmDialog(DialogService, $"Confirma a exclusão do servidor? {guildDto.Name}");
 
             if (!confirm)
                 return;
-            
+
             await GuildsEndpoints.DeleteGuild(guildDto.Id);
 
             Snackbar.Add("Servidor deletado com sucesso", Severity.Success);

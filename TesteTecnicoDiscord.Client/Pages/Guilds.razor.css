@@ -1,1 +1,13 @@
-﻿
+﻿::deep .bgimage {
+    background-image: url('img/newguild.jpg');
+    background-size: cover;
+    background-position: center;
+}
+
+.signika-font-title {
+    font-family: "Signika", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-style: normal;
+    font-variation-settings: "GRAD" 0;
+}

@@ -1,0 +1,41 @@
+@inherits UserProfileDialogBase
+
+<MudDialog ClassContent="pb-6" TitleClass="pa-0">
+    <DialogContent>
+        <MudGrid Justify="Justify.Center" Spacing="3">
+            <MudItem xs="12">
+                <MudIconButton Size="Size.Large" Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Tertiary"/>
+            </MudItem>
+
+            <MudItem xs="12">
+                <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                    <MudAvatar Style="height:70px; width:70px; font-size:2rem;" Color="Color.Primary">A</MudAvatar>
+
+                    <MudText Align="Align.Center">Username</MudText>
+
+                    <MudText Align="Align.Center">Data de criação</MudText>
+                </MudStack>
+            </MudItem>
+
+            <MudItem xs="12">
+                <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Row="true">
+                    <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                        <MudText Align="Align.Center">
+                            <b>250</b>
+                        </MudText>
+                        <MudText Align="Align.Center">Servidores</MudText>
+                    </MudStack>
+
+
+                    <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                        <MudText Align="Align.Center">
+                            <b>250</b>
+                        </MudText>
+                        <MudText Align="Align.Center">Mensagens</MudText>
+                    </MudStack>
+                </MudStack>
+
+            </MudItem>
+        </MudGrid>
+    </DialogContent>
+</MudDialog>
