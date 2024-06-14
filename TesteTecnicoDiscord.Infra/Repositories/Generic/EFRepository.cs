@@ -10,7 +10,8 @@ public class EFRepository<T> : IRepository<T> where T : EntityBase
     private readonly AppDbContext _context;
     private readonly DbSet<T> _dbSet;
 
-    protected EFRepository(AppDbContext context)
+    // ATENÇÃO ISSO AQUI PRECISA SER PUBLIC NÃO CONFIA NO RIDER
+    public EFRepository(AppDbContext context)
     {
         _context = context;
         _dbSet = _context.Set<T>();

@@ -1,7 +1,10 @@
 ﻿using TesteTecnicoDiscord.Application.Interfaces.Services;
+using TesteTecnicoDiscord.Application.Interfaces.Services.Generic;
 using TesteTecnicoDiscord.Application.Services;
 using TesteTecnicoDiscord.Infra.Interfaces;
+using TesteTecnicoDiscord.Infra.Interfaces.Generic;
 using TesteTecnicoDiscord.Infra.Repositories;
+using TesteTecnicoDiscord.Infra.Repositories.Generic;
 
 namespace TesteTecnicoDiscord.DependencyInjection;
 
@@ -24,6 +27,9 @@ public static class DependencyInjectionExtensions
         serviceCollection.AddScoped<IGuildsRepository, GuildsRepository>();
         serviceCollection.AddScoped<IChannelRepository, ChannelRepository>();
         serviceCollection.AddScoped<IMessageRepository, MessageRepository>();
+        serviceCollection.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+        serviceCollection.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
+
         return serviceCollection;
     }
 }

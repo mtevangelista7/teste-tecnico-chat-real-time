@@ -41,7 +41,6 @@ public class GuildsController(
     {
         try
         {
-            GetGuildsDto guildResponse = new GetGuildsDto();
             var guild = await guildsService.GetById(guildId);
 
             if (guild is null)
@@ -49,7 +48,7 @@ public class GuildsController(
                 return BadRequest();
             }
 
-            guildResponse = guild.Adapt<GetGuildsDto>();
+            var guildResponse = guild.Adapt<GetGuildsDto>();
             return Ok(guildResponse);
         }
         catch (Exception ex)
@@ -82,7 +81,7 @@ public class GuildsController(
         try
         {
             // TODO: Verificar se o cascade está funcionando corretamente nas tabelas de junção
-            await guildsService.DeleteGuild(guildId);
+            await guildsService.Delete(guildId);
             return Accepted();
         }
         catch (Exception ex)
@@ -142,12 +141,12 @@ public class GuildsController(
         try
         {
             List<ReceiveMessageDto> receiveMessagesDto = [];
-            var messages = await messageService.GetMessagesFromChannel(channelId);
+            var messages = await messageService.GetByChannelId(channelId);
 
             if (messages is not { Count: > 0 }) return Ok(receiveMessagesDto);
 
             receiveMessagesDto = messages.Adapt<List<ReceiveMessageDto>>();
-            receiveMessagesDto.ForEach(async x => x.OwnerUsername = (await userService.GetUserById(x.UserId)).Username);
+            receiveMessagesDto.ForEach(async x => x.OwnerUsername = (await userService.GetById(x.UserId)).Username);
             return Ok(receiveMessagesDto);
         }
         catch (Exception ex)
@@ -161,7 +160,7 @@ public class GuildsController(
     {
         try
         {
-            var channel = await channelService.GetChannelById(id);
+            var channel = await channelService.GetById(id);
 
             if (channel is null) return NotFound();
 

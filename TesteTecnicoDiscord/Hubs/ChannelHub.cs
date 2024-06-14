@@ -23,9 +23,9 @@ public class ChannelHub(IUserService userService, IMessageService messageService
             UserId = messageDto.UserId
         };
 
-        newMessage = await messageService.CreateNewMessage(newMessage);
+        newMessage = await messageService.Add(newMessage);
 
-        var user = await userService.GetUserById(newMessage.UserId);
+        var user = await userService.GetById(newMessage.UserId);
 
         if (user is null)
             throw new NullReferenceException();
@@ -43,7 +43,7 @@ public class ChannelHub(IUserService userService, IMessageService messageService
 
     public async Task JoinChannel(Guid guildId, Guid channelId, Guid userId)
     {
-        var user = await userService.GetUserById(userId);
+        var user = await userService.GetById(userId);
         var messageDto = new CreateMessageDto()
         {
             ChannelId = channelId,
@@ -70,7 +70,7 @@ public class ChannelHub(IUserService userService, IMessageService messageService
         if (ConnectionGroups.ContainsKey(Context.ConnectionId) &&
             ConnectionGroups[Context.ConnectionId].Contains(groupName))
         {
-            var user = await userService.GetUserById(userId);
+            var user = await userService.GetById(userId);
             var messageDto = new CreateMessageDto()
             {
                 ChannelId = channelId,

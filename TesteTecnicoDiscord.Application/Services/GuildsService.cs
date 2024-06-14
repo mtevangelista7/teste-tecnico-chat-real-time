@@ -2,16 +2,15 @@
 using TesteTecnicoDiscord.Application.Interfaces.Services;
 using TesteTecnicoDiscord.Domain.Entities;
 using TesteTecnicoDiscord.Infra.Interfaces;
+using TesteTecnicoDiscord.Infra.Interfaces.Generic;
 
 namespace TesteTecnicoDiscord.Application.Services;
 
-public class GuildsService(IGuildsRepository guildsRepository, IUserRepository userRepository) : IGuildsService
+public class GuildsService(
+    IRepository<Guild> repository,
+    IUserRepository userRepository,
+    IGuildsRepository guildsRepository) : GenericService<Guild>(repository), IGuildsService
 {
-    public async Task<List<Guild>> GetAll()
-    {
-        return await guildsRepository.GetAll();
-    }
-
     public async Task<Guild> CreateNewGuild(CreateGuildDto guildRequest)
     {
         var user = await userRepository.GetById(guildRequest.OwnerId);
@@ -29,15 +28,5 @@ public class GuildsService(IGuildsRepository guildsRepository, IUserRepository u
 
         var newGuild = await guildsRepository.CreateNewGuild(guild);
         return newGuild;
-    }
-
-    public async Task DeleteGuild(Guid guildId)
-    {
-        await guildsRepository.Delete(guildId);
-    }
-
-    public async Task<Guild> GetById(Guid guildId)
-    {
-        return await guildsRepository.GetById(guildId);
     }
 }

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;
+using TesteTecnicoDiscord.Application.Interfaces.Services.Generic;
 using TesteTecnicoDiscord.Domain.Entities;
 using TesteTecnicoDiscord.Infra.Interfaces;
 

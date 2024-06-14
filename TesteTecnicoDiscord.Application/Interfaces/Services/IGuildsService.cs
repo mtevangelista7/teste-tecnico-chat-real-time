@@ -1,12 +1,10 @@
 ﻿using TesteTecnicoDiscord.Application.Dtos;
+using TesteTecnicoDiscord.Application.Interfaces.Services.Generic;
 using TesteTecnicoDiscord.Domain.Entities;
 
 namespace TesteTecnicoDiscord.Application.Interfaces.Services;
 
-public interface IGuildsService
+public interface IGuildsService : IGenericService<Guild>
 {
-    Task<List<Guild>> GetAll();
     Task<Guild> CreateNewGuild(CreateGuildDto guild);
-    Task DeleteGuild(Guid guildId);
-    Task<Guild> GetById(Guid guildId);
 }

@@ -2,10 +2,14 @@
 using TesteTecnicoDiscord.Application.Interfaces.Services;
 using TesteTecnicoDiscord.Domain.Entities;
 using TesteTecnicoDiscord.Infra.Interfaces;
+using TesteTecnicoDiscord.Infra.Interfaces.Generic;
 
 namespace TesteTecnicoDiscord.Application.Services;
 
-public class ChannelService(IChannelRepository channelRepository, IGuildsRepository guildsRepository) : IChannelService
+public class ChannelService(
+    IRepository<Channel> repository,
+    IChannelRepository channelRepository,
+    IGuildsRepository guildsRepository) : GenericService<Channel>(repository), IChannelService
 {
     public async Task<List<Channel>> GetAllChannelsById(Guid guildId)
     {
@@ -28,10 +32,5 @@ public class ChannelService(IChannelRepository channelRepository, IGuildsReposit
 
         await channelRepository.Add(channel);
         return channel;
-    }
-
-    public async Task<Channel> GetChannelById(Guid channelId)
-    {
-        return await channelRepository.GetById(channelId);
     }
 }

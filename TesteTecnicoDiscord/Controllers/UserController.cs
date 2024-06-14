@@ -23,7 +23,7 @@ public class UserController(IUserService userService) : ControllerBase
             if (string.IsNullOrWhiteSpace(userId))
                 return BadRequest();
 
-            var user = await userService.GetUserById(Guid.Parse(userId));
+            var user = await userService.GetById(Guid.Parse(userId));
 
             if (user is null)
                 return BadRequest();
