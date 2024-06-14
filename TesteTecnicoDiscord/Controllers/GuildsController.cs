@@ -129,10 +129,19 @@ public class GuildsController(
         }
     }
 
+    // TODO: coloca isso no controller de mensagens e muda essa rota pelo amor de DEUS
     [HttpDelete("{guildId:guid}/channels/{channelId:guid}/messages/{messageId:guid}")]
     public async Task<IActionResult> DeleteMessage(Guid guildId, Guid channelId, Guid messageId)
     {
-        throw new NotImplementedException();
+        try
+        {
+            await messageService.Delete(messageId);
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
     }
 
     [HttpGet("channels/{channelId:guid}/getMessages")]

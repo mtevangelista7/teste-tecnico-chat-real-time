@@ -31,4 +31,6 @@ public interface IGuildsEndpoints
     [Get("/guilds/channels/{id}")]
     public Task<GetChannelsDto> GetChannelById(Guid id);
 
+    [Delete("/guilds/{guildId}/channels/{channelId}/messages/{messageId}")]
+    public Task DeleteMessage(Guid guildId, Guid channelId, Guid messageId);
 }

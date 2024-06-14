@@ -16,14 +16,16 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
     [Parameter] public Guid ChannelId { get; set; }
 
     [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
+    [Inject] private IUserEndpoints UserEndpoints { get; set; }
 
     protected string MessageInput = string.Empty;
     protected List<ReceiveMessageDto> ListMessages = [];
     protected string ChannelName = string.Empty;
+    protected string CurrentUsername = string.Empty;
+    protected Guid UserId = Guid.Empty;
 
     private HubConnection _hubConnection;
     private DotNetObjectReference<ChannelMessagesBase> _dotNetRef;
-    private Guid _userId = Guid.Empty;
 
     protected override async Task OnInitializedAsync()
     {
@@ -32,8 +34,8 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
             var authState = await AuthStateProvider
                 .GetAuthenticationStateAsync();
 
-            _userId = Guid.Parse(authState.User.Claims.FirstOrDefault(claim => claim.Type == "nameid").Value);
-            if (_userId.Equals(Guid.Empty))
+            UserId = Guid.Parse(authState.User.Claims.FirstOrDefault(claim => claim.Type == "nameid").Value);
+            if (UserId.Equals(Guid.Empty))
             {
                 NavigationManager.NavigateTo("/login");
                 return;
@@ -46,6 +48,7 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
             await OpenConnection();
             await LoadMessages();
             await GetChannelName();
+            await GetCurrentUserName();
 
             StateHasChanged();
             await JSRuntime.InvokeVoidAsync("scrollToBottom", "scrollablePaper");
@@ -79,7 +82,7 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
         });
 
         await _hubConnection.StartAsync();
-        await _hubConnection.SendAsync("JoinChannel", GuildId, ChannelId, _userId);
+        await _hubConnection.SendAsync("JoinChannel", GuildId, ChannelId, UserId);
     }
 
     private async Task LoadMessages()
@@ -101,7 +104,7 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
                     Content = MessageInput,
                     GuildId = GuildId,
                     Timestamp = DateTime.Now,
-                    UserId = _userId
+                    UserId = UserId
                 };
 
                 await _hubConnection.SendAsync("SendMessage", createMessageDto);
@@ -127,7 +130,7 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
 
     private async Task OnPageExit()
     {
-        await _hubConnection.SendAsync("LeaveChannel", GuildId, ChannelId, _userId);
+        await _hubConnection.SendAsync("LeaveChannel", GuildId, ChannelId, UserId);
     }
 
     public void Dispose()
@@ -161,12 +164,32 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
         ChannelName = channel.Name;
     }
 
+    private async Task GetCurrentUserName()
+    {
+        var user = await UserEndpoints.GetUser();
+        CurrentUsername = user.Username;
+    }
+
     protected async Task HandleClickEnter(KeyboardEventArgs eventArgs)
     {
         try
         {
             if (eventArgs.Key is "Enter" or "Backspace")
                 await SendMessage();
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
+        }
+    }
+
+    protected async Task HandleClickDeleteMessage(Guid messageId)
+    {
+        try
+        {
+            await GuildsEndpoints.DeleteMessage(GuildId, ChannelId, messageId);
+
+            await LoadMessages();
         }
         catch (Exception ex)
         {

@@ -1,4 +1,5 @@
-﻿using TesteTecnicoDiscord.Domain.Entities;
+﻿using Microsoft.EntityFrameworkCore;
+using TesteTecnicoDiscord.Domain.Entities;
 using TesteTecnicoDiscord.Infra.Data.Context;
 using TesteTecnicoDiscord.Infra.Interfaces;
 using TesteTecnicoDiscord.Infra.Repositories.Generic;
@@ -21,5 +22,10 @@ public class GuildsRepository(AppDbContext context) : EFRepository<Guild>(contex
 
         await transaction.CommitAsync();
         return guild;
+    }
+
+    public async Task<int> GetGuildCountFromUser(Guid userId)
+    {
+        return await context.Guilds.CountAsync(x => x.OwnerUser.Id == userId);
     }
 }

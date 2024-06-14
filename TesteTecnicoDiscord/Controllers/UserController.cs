@@ -11,7 +11,8 @@ namespace TesteTecnicoDiscord.Controllers;
 [Authorize]
 [ApiController]
 [Route("[controller]")]
-public class UserController(IUserService userService) : ControllerBase
+public class UserController(IUserService userService, IMessageService messageService, IGuildsService guildsService)
+    : ControllerBase
 {
     [HttpGet]
     public async Task<IActionResult> GetAuthUser()
@@ -29,8 +30,34 @@ public class UserController(IUserService userService) : ControllerBase
                 return BadRequest();
 
             var userDto = user.Adapt<GetUserDto>();
-            
+
             return Ok(userDto);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("getMessagesCount/{userId:guid}")]
+    public async Task<IActionResult> GetMessagesCountFromUser(Guid userId)
+    {
+        try
+        {
+            return Ok(await messageService.GetMessageCountFromUser(userId));
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("getGuildsCount/{userId:guid}")]
+    public async Task<IActionResult> GetGuildCountFromUser(Guid userId)
+    {
+        try
+        {
+            return Ok(await guildsService.GetGuildCountFromUser(userId));
         }
         catch (Exception ex)
         {

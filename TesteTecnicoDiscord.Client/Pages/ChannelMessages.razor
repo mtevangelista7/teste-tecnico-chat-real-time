@@ -24,21 +24,31 @@
 
 
                                 <MudItem xs="12">
-                                    <div id="scrollablePaper" class="pa-3" style="height: 400px; overflow-y: scroll; overflow-x: hidden">
+                                    <div id="scrollablePaper" class="pa-3 d-flex flex-column-reverse" style="height: 400px; overflow-y: scroll; overflow-x: hidden">
                                         <MudContainer MaxWidth="MaxWidth.Large">
                                             <MudStack Style="height: 100%" Justify="Justify.FlexStart" Row="false" Reverse="false">
                                                 @foreach (var message in ListMessages)
                                                 {
                                                     <MudPaper MaxWidth="100%" Style="background-color: transparent;" Elevation="0" Class="d-flex justify-start">
-                                                        <MudStack Style="max-width: 100%" Spacing="1">
-                                                            <MudText Style="line-break: anywhere" Align="Align.Start" Typo="Typo.subtitle1">
-                                                                <b>@message.OwnerUsername:</b>
-                                                            </MudText>
+                                                        <MudStack Style="width: 100%" Spacing="1">
+
+                                                            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                                                <MudText Style="line-break: anywhere" Align="Align.Start" Typo="Typo.subtitle1">
+                                                                    <b>@message.OwnerUsername:</b>
+                                                                </MudText>
+
+                                                                @if (message.UserId == UserId)
+                                                                {
+                                                                    <MudIconButton OnClick="_ => HandleClickDeleteMessage(message.Id)" Color="Color.Error" Icon="@Icons.Material.Filled.Delete" Size="Size.Small">
+                                                                    </MudIconButton>
+                                                                }
+                                                            </MudStack>
+
 
                                                             <MudText Style="line-break: anywhere" Align="Align.Start" Typo="Typo.body1">
                                                                 @message.Timestamp @message.Content
                                                             </MudText>
-                                                        </MudStack>
+                                                        </MudStack >
                                                     </MudPaper>
                                                 }
                                             </MudStack>

@@ -6,4 +6,5 @@ namespace TesteTecnicoDiscord.Application.Interfaces.Services;
 public interface IMessageService: IGenericService<Message>
 {
     Task<List<Message>> GetByChannelId(Guid channelId);
+    Task<int> GetMessageCountFromUser(Guid userId);
 }

@@ -12,4 +12,9 @@ public class MessageRepository(AppDbContext context) : EFRepository<Message>(con
     {
         return await context.Messages.Where(x => x.ChannelId == channelId).AsNoTracking().ToListAsync();
     }
+
+    public async Task<int> GetMessageCountFromUser(Guid userId)
+    {
+        return await context.Messages.CountAsync(x => x.UserId == userId);
+    }
 }

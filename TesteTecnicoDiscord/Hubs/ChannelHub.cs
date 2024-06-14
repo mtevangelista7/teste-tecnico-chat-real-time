@@ -35,7 +35,8 @@ public class ChannelHub(IUserService userService, IMessageService messageService
             Id = newMessage.Id,
             Content = newMessage.Content,
             OwnerUsername = user.Username,
-            Timestamp = newMessage.Timestamp
+            Timestamp = newMessage.Timestamp,
+            UserId = user.Id
         };
 
         await Clients.Group(messageDto.ChannelId.ToString()).SendAsync("ReceiveMessage", receiveMessage);

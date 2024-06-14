@@ -91,6 +91,7 @@ public class GuildsBase : ComponentBaseExtends
                 return;
 
             Guilds = await GetGuilds();
+            FilteredGuilds = Guilds;
             StateHasChanged();
         }
         catch (Exception ex)

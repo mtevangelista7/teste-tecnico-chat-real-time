@@ -96,6 +96,7 @@ public class GuildChannelsBase : ComponentBaseExtends
                 return;
 
             Channels = await GetAllChannels(GuildId);
+            FilteredChannels = Channels;
             StateHasChanged();
         }
         catch (Exception ex)

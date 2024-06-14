@@ -11,7 +11,7 @@ public class UserProfileDialogBase : ComponentBaseExtends
 {
     [Inject] private IUserEndpoints UserEndpoints { get; set; }
     [CascadingParameter] MudDialogInstance MudDialog { get; set; }
-    
+
     protected GetUserDto User = new();
     protected int MessagesCount;
     protected int GuildsCount;
@@ -35,14 +35,12 @@ public class UserProfileDialogBase : ComponentBaseExtends
 
     private async Task GetMessageCount()
     {
-        // TODO: aaa
-        MessagesCount = 0;
+        MessagesCount = await UserEndpoints.GetMessagesCount(User.Id);
     }
 
     private async Task GetGuildCount()
     {
-        // TODO: aaa
-        GuildsCount = 0;
+        GuildsCount = await UserEndpoints.GetGuildCount(User.Id);
     }
 
     protected async Task CloseDialog()

@@ -29,4 +29,9 @@ public class GuildsService(
         var newGuild = await guildsRepository.CreateNewGuild(guild);
         return newGuild;
     }
+
+    public async Task<int> GetGuildCountFromUser(Guid userId)
+    {
+        return await guildsRepository.GetGuildCountFromUser(userId);
+    }
 }
