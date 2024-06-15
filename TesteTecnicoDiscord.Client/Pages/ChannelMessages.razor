@@ -1,0 +1,83 @@
+@inherits ChannelMessagesBase;
+@page "/Guilds/{GuildId:guid}/{ChannelId:guid}";
+
+<PageTitle>Messages</PageTitle>
+
+<div>
+    <MudGrid Spacing="0">
+        <MudItem xs="12">
+            <MudPaper Elevation="0" Height="100dvh" Width="100%" Class="bgimage pa-3 d-flex align-center justify-center">
+                <MudGrid Justify="Justify.Center" Spacing="0">
+                    <MudItem xs="11" sm="8" md="6">
+                        <MudPaper Elevation="10" Class="d-flex rounded-lg align-center justify-center white-text pa-10">
+                            <MudGrid Spacing="2">
+
+                                <MudItem xs="12">
+                                    <MudPaper Width="100%" Elevation="10">
+                                        <MudStack AlignItems="AlignItems.Center" Row="true">
+                                            <MudIconButton OnClick="OnClickLeave" Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary"></MudIconButton>
+                                            <MudText Typo="Typo.h6">@ChannelName</MudText>
+                                        </MudStack>
+                                    </MudPaper>
+                                </MudItem>
+
+
+                                <MudItem xs="12">
+                                    <div id="scrollablePaper" class="pa-3 d-flex flex-column-reverse" style="height: 400px; overflow-y: scroll; overflow-x: hidden">
+                                        <MudContainer MaxWidth="MaxWidth.Large">
+                                            <MudStack Style="height: 100%" Justify="Justify.FlexStart" Row="false" Reverse="false">
+                                                @foreach (var message in ListMessages)
+                                                {
+                                                    <MudPaper MaxWidth="100%" Style="background-color: transparent;" Elevation="0" Class="d-flex justify-start">
+                                                        <MudStack Style="width: 100%" Spacing="1">
+
+                                                            <MudStack Row="true" Justify="Justify.SpaceBetween">
+                                                                <MudText Style="line-break: anywhere" Align="Align.Start" Typo="Typo.subtitle1">
+                                                                    <b>@message.OwnerUsername:</b>
+                                                                </MudText>
+
+                                                                @if (message.UserId == UserId)
+                                                                {
+                                                                    <MudIconButton OnClick="_ => HandleClickDeleteMessage(message.Id)" Color="Color.Error" Icon="@Icons.Material.Filled.Delete" Size="Size.Small">
+                                                                    </MudIconButton>
+                                                                }
+                                                            </MudStack>
+
+
+                                                            <MudText Style="line-break: anywhere" Align="Align.Start" Typo="Typo.body1">
+                                                                @message.Timestamp @message.Content
+                                                            </MudText>
+                                                        </MudStack >
+                                                    </MudPaper>
+                                                }
+                                            </MudStack>
+                                        </MudContainer>
+                                    </div>
+                                </MudItem>
+
+                                <MudItem xs="12">
+                                    <MudGrid Justify="Justify.Center" Spacing="0">
+                                        <MudItem xs="10">
+                                            <MudTextField T="string"
+                                                          @bind-Value="MessageInput"
+                                                          Class="rounded-xl"
+                                                          Margin="Margin.Dense"
+                                                          OnKeyDown="args => HandleClickEnter(args)"
+                                                          Placeholder="Enviar"
+                                                          Variant="Variant.Outlined"
+                                                          Adornment="Adornment.End"
+                                                          AdornmentColor="Color.Primary"
+                                                          OnAdornmentClick="SendMessage"
+                                                          AdornmentIcon="@Icons.Material.Filled.Send"/>
+                                        </MudItem>
+                                    </MudGrid>
+                                </MudItem>
+
+                            </MudGrid>
+                        </MudPaper>
+                    </MudItem>
+                </MudGrid>
+            </MudPaper>
+        </MudItem>
+    </MudGrid>
+</div>

@@ -1,0 +1,66 @@
+@inherits UserProfileDialogBase
+
+<MudDialog Class="pa-3" ClassContent="pa-0" TitleClass="pa-0">
+    <DialogContent>
+
+        @if (User != null && !string.IsNullOrWhiteSpace(User.Name))
+        {
+            <MudGrid Justify="Justify.Center" Spacing="0">
+                <MudItem xs="12">
+                    <MudStack Justify="Justify.FlexStart" AlignItems="AlignItems.Center" Row="true">
+                        <MudIconButton OnClick="CloseDialog" Size="Size.Medium" Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Tertiary"/>
+                        <MudText Typo="Typo.h6">Fechar</MudText>
+                    </MudStack>
+                </MudItem>
+
+                <MudItem xs="10">
+                    <MudPaper Class="pa-3" Elevation="10">
+                        <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                            <MudAvatar Style="height:90px; width:90px; font-size:3rem;" Color="Color.Primary">@User.Name[0]</MudAvatar>
+
+                            <MudStack Spacing="0">
+                                <MudText Typo="Typo.h6" Align="Align.Center">@User.Name</MudText>
+                                <MudText Typo="Typo.body2" Align="Align.Center">@($"@{User.Username}")</MudText>
+                            </MudStack>
+
+                            <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Start" Spacing="1">
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    <b>Cadastro:</b>
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">@User.DateCreated.ToString("dd/MM/yyyy")</MudText>
+                            </MudStack>
+
+                            <MudStack Row="true" Justify="Justify.Center" AlignItems="AlignItems.Start" Spacing="1">
+                                <MudText Typo="Typo.body1" Align="Align.Center">
+                                    <b>Nascimento:</b>
+                                </MudText>
+                                <MudText Typo="Typo.body1" Align="Align.Center">@User.BirthDate.ToString("dd/MM/yyyy")</MudText>
+                            </MudStack>
+                        </MudStack>
+                    </MudPaper>
+                </MudItem>
+
+                <MudItem xs="10">
+                    <MudPaper Class="pa-3 mt-3" Elevation="10">
+                        <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center" Row="true">
+                            <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                                <MudText Align="Align.Center">
+                                    <b>@GuildsCount</b>
+                                </MudText>
+                                <MudText Align="Align.Center">Servidores</MudText>
+                            </MudStack>
+
+
+                            <MudStack AlignItems="AlignItems.Center" Justify="Justify.Center">
+                                <MudText Align="Align.Center">
+                                    <b>@MessagesCount</b>
+                                </MudText>
+                                <MudText Align="Align.Center">Mensagens</MudText>
+                            </MudStack>
+                        </MudStack>
+                    </MudPaper>
+                </MudItem>
+            </MudGrid>
+        }
+    </DialogContent>
+</MudDialog>
