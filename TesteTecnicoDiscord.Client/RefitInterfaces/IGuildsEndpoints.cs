@@ -36,5 +36,8 @@ public interface IGuildsEndpoints
 
     [Get("/{guildId}/{userId}/addUser")]
     public Task AddUserToGuild(Guid guildId, Guid userId);
+    
+    [Get("/{channelId}/{userId}/addUserToChannel")]
+    public Task AddUserToChannel(Guid channelId, Guid userId);
 
 }

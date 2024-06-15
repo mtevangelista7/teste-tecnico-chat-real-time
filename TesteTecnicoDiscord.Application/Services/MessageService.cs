@@ -47,7 +47,7 @@ public class MessageService(
             Channel = channel
         };
 
-        message = await repository.Add(message);
+        message = await messageRepository.Add(message);
         return message;
     }
 }

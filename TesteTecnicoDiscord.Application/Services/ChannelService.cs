@@ -33,4 +33,9 @@ public class ChannelService(
         await channelRepository.Add(channel);
         return channel;
     }
+
+    public async Task AddUserToChannel(Guid userId, Guid channelId)
+    {
+        await channelRepository.AddUserToChannel(userId, channelId);
+    }
 }

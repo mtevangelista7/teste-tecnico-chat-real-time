@@ -37,14 +37,16 @@ public class GuildsRepository(AppDbContext context) : EFRepository<Guild>(contex
         }
 
         var isUserInGuild = guild.GuildUsers.Any(gu => gu.UserId == userId);
-        
+
         if (!isUserInGuild)
         {
-            guild.GuildUsers.Add(new GuildUser { UserId = user.Id, GuildId = guild.Id, User = user, Guild = guild});
+            guild.GuildUsers.Add(new GuildUser { UserId = user.Id, GuildId = guild.Id });
             guild.MembersCount++;
 
             await context.SaveChangesAsync();
         }
+
+        await transaction.CommitAsync();
     }
 
     public async Task<int> GetGuildCountFromUser(Guid userId)

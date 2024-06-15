@@ -17,4 +17,18 @@ public class MessageRepository(AppDbContext context) : EFRepository<Message>(con
     {
         return await context.Messages.CountAsync(x => x.UserId == userId);
     }
+
+    public new async Task<Message> Add(Message message)
+    {
+        context.Messages.Add(message);
+
+        var guild = await context.Guilds.FindAsync(message.GuildId);
+        var channel = await context.Channels.FindAsync(message.ChannelId);
+
+        guild.MessagesCount++;
+        channel.Messages.Add(message);
+
+        await context.SaveChangesAsync();
+        return message;
+    }
 }

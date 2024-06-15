@@ -20,7 +20,7 @@ public class GuildChannelsBase : ComponentBaseExtends
     protected bool Processing;
     private Guid _userId = Guid.Empty;
 
-    protected List<GetChannelsDto> Channels = [];
+    private List<GetChannelsDto> _channels = [];
     protected List<GetChannelsDto> FilteredChannels = [];
     protected GetGuildsDto GuildMain = new();
 
@@ -48,9 +48,9 @@ public class GuildChannelsBase : ComponentBaseExtends
             }
 
             GuildMain = await GuildsEndpoints.GetGuild(GuildId);
-            Channels = await GetAllChannels(GuildId);
+            _channels = await GetAllChannels(GuildId);
 
-            FilteredChannels = Channels;
+            FilteredChannels = _channels;
             StateHasChanged();
         }
         catch (Exception ex)
@@ -95,8 +95,8 @@ public class GuildChannelsBase : ComponentBaseExtends
             if (result.Canceled)
                 return;
 
-            Channels = await GetAllChannels(GuildId);
-            FilteredChannels = Channels;
+            _channels = await GetAllChannels(GuildId);
+            FilteredChannels = _channels;
             StateHasChanged();
         }
         catch (Exception ex)
@@ -109,9 +109,7 @@ public class GuildChannelsBase : ComponentBaseExtends
     {
         try
         {
-            // TODO: Aqui é preciso adicionar o fluxo de associar o user com o canal
-
-            // join in channel
+            await GuildsEndpoints.AddUserToChannel(getChannelsDto.Id, _userId);
             NavigationManager.NavigateTo($"/Guilds/{GuildId}/{getChannelsDto.Id}");
         }
         catch (Exception ex)
@@ -135,8 +133,8 @@ public class GuildChannelsBase : ComponentBaseExtends
     protected async Task FilterChannels(string param)
     {
         FilteredChannels = string.IsNullOrWhiteSpace(param)
-            ? Channels
-            : Channels.FindAll(c => c.Name.Contains(param, StringComparison.OrdinalIgnoreCase));
+            ? _channels
+            : _channels.FindAll(c => c.Name.Contains(param, StringComparison.OrdinalIgnoreCase));
 
         StateHasChanged();
     }

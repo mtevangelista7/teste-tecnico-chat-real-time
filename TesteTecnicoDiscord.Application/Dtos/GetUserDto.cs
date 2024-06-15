@@ -8,4 +8,5 @@ public class GetUserDto
     public string Username { get; set; }
 
     public DateTime BirthDate { get; set; }
+    public DateTime DateCreated { get; set; }
 }

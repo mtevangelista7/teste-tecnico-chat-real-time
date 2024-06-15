@@ -189,7 +189,21 @@ public class GuildsController(
         try
         {
             await guildsService.AddUserToGuild(userId, guildId);
-            
+
+            return NoContent();
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }
+    }
+
+    [HttpGet("/{channelId:guid}/{userId:guid}/addUserToChannel")]
+    public async Task<IActionResult> AddUserToChannel(Guid channelId, Guid userId)
+    {
+        try
+        {
+            await channelService.AddUserToChannel(userId, channelId);
             return NoContent();
         }
         catch (Exception ex)
