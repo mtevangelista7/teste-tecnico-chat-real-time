@@ -9,10 +9,10 @@
             <MudPaper Elevation="0" Height="100dvh" Width="100%" Class="bgimage pa-3 d-flex align-center justify-center">
                 <MudGrid Justify="Justify.Center" Spacing="0">
                     <MudItem xs="11" sm="8" md="6">
-                        <MudPaper Elevation="10" Class="d-flex rounded-lg align-center justify-center white-text pa-10">
+                        <MudPaper Elevation="10" Class="zoom-in d-flex rounded-lg align-center justify-center white-text pa-10">
                             <MudGrid Spacing="2">
 
-                                <MudItem xs="12">
+                                <MudItem Class="slide-in-bottom" xs="12">
                                     <MudPaper Width="100%" Elevation="10">
                                         <MudStack AlignItems="AlignItems.Center" Row="true">
                                             <MudIconButton OnClick="OnClickLeave" Icon="@Icons.Material.Filled.ArrowBack" Color="Color.Primary"></MudIconButton>
@@ -20,15 +20,14 @@
                                         </MudStack>
                                     </MudPaper>
                                 </MudItem>
-
-
+                                
                                 <MudItem xs="12">
-                                    <div id="scrollablePaper" class="pa-3 d-flex flex-column-reverse" style="height: 400px; overflow-y: scroll; overflow-x: hidden">
+                                    <div id="scrollablePaper" class="fade-in pa-3 d-flex flex-column-reverse" style="height: 400px; overflow-y: scroll; overflow-x: hidden">
                                         <MudContainer MaxWidth="MaxWidth.Large">
                                             <MudStack Style="height: 100%" Justify="Justify.FlexStart" Row="false" Reverse="false">
                                                 @foreach (var message in ListMessages)
                                                 {
-                                                    <MudPaper MaxWidth="100%" Style="background-color: transparent;" Elevation="0" Class="d-flex justify-start">
+                                                    <MudPaper MaxWidth="100%" Style="background-color: transparent;" Elevation="0" Class="fade-in d-flex justify-start">
                                                         <MudStack Style="width: 100%" Spacing="1">
 
                                                             <MudStack Row="true" Justify="Justify.SpaceBetween">
@@ -55,7 +54,7 @@
                                     </div>
                                 </MudItem>
 
-                                <MudItem xs="12">
+                                <MudItem Class="slide-in-bottom" xs="12">
                                     <MudGrid Justify="Justify.Center" Spacing="0">
                                         <MudItem xs="10">
                                             <MudTextField T="string"
