@@ -2,6 +2,11 @@
 
 Este é um projeto de estudo baseado no [teste técnico](https://gist.github.com/DanielHe4rt/4012e5bf9c612d9cee9efa654eb32f6d) de DanielHe4rt, implementado utilizando .NET 8 com Blazor WebAssembly hosted.
 
+# Demo
+
+https://github.com/mtevangelista7/teste-tecnico-chat-real-time/assets/123425476/a001bcba-832a-4ddd-b3be-5577004a93d7
+
+
 ## Tecnologias Utilizadas
 
 - [.NET 8](https://dotnet.microsoft.com/)
