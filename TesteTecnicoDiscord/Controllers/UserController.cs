@@ -1,7 +1,6 @@
 ﻿using System.Security.Claims;
 using Mapster;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;

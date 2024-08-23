@@ -10,17 +10,20 @@ namespace TesteTecnicoDiscord.Client.Dialogs;
 
 public class CreateGuildOrChannelDialogBase : ComponentBaseExtends
 {
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    protected CreateChannelDto CreateChannelDto = new();
+    protected bool CreateGuild;
+
+    protected CreateGuildDto CreateGuildDto = new();
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
     [Parameter] public Guid OwnerUserId { get; set; } = Guid.Empty;
     [Parameter] public Guid GuildMainId { get; set; } = Guid.Empty;
     [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
 
-    protected CreateGuildDto CreateGuildDto = new();
-    protected CreateChannelDto CreateChannelDto = new();
-    protected bool CreateGuild = false;
-
-    protected void Cancel() => MudDialog.Cancel();
+    protected void Cancel()
+    {
+        MudDialog.Cancel();
+    }
 
     protected override void OnInitialized()
     {

@@ -15,9 +15,7 @@ public class AuthenticatedHttpClientHandler(ILocalStorageService localStorageSer
 
         // If the token is not null or empty, add it to the request's Authorization header
         if (!string.IsNullOrWhiteSpace(token))
-        {
             request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", token);
-        }
 
         // Continue sending the request, without the tokens
         return await base.SendAsync(request, cancellationToken);

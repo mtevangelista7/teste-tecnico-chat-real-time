@@ -11,15 +11,15 @@ namespace TesteTecnicoDiscord.Client.Pages;
 
 public class GuildsBase : ComponentBaseExtends
 {
-    [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
-    [Inject] private ISnackbar Snackbar { get; set; }
-
-    protected string Username = string.Empty;
-    protected bool Processing = false;
     private Guid _userId = Guid.Empty;
+    protected List<GetGuildsDto> FilteredGuilds = [];
 
     protected List<GetGuildsDto> Guilds = [];
-    protected List<GetGuildsDto> FilteredGuilds = [];
+    protected bool Processing;
+
+    protected string Username = string.Empty;
+    [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
@@ -30,10 +30,7 @@ public class GuildsBase : ComponentBaseExtends
 
             var user = authState.User;
 
-            if (user.Identity is null || !user.Identity.IsAuthenticated)
-            {
-                NavigationManager.NavigateTo("/login");
-            }
+            if (user.Identity is null || !user.Identity.IsAuthenticated) NavigationManager.NavigateTo("/login");
 
             Username = user.Claims.FirstOrDefault(claim => claim.Type == "unique_name").Value;
             _userId = Guid.Parse(user.Claims.FirstOrDefault(claim => claim.Type == "nameid").Value);

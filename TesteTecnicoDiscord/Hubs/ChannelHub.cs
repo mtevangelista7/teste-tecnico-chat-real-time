@@ -1,7 +1,6 @@
 ﻿using Microsoft.AspNetCore.SignalR;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;
-using TesteTecnicoDiscord.Domain.Entities;
 
 namespace TesteTecnicoDiscord.Hubs;
 
@@ -13,20 +12,41 @@ public class ChannelHub(IUserService userService, IMessageService messageService
     {
         if (messageDto is null)
             throw new NullReferenceException();
-        
-        var newMessage = await messageService.Add(messageDto);
 
-        var user = await userService.GetById(newMessage.UserId);
+        var result = await messageService.Add(messageDto);
+
+        if (!result.IsSuccess)
+        {
+            var errorMessage = new ErrorMessageDto
+            {
+                ErrorCode = "MESSAGE_CREATION_FAILED",
+                ErrorMessage = "Failed to create the message. Please try again later."
+            };
+
+            await Clients.Caller.SendAsync("ReceiveError", errorMessage);
+            return;
+        }
+        
+        var user = await userService.GetById(result.Value.UserId);
 
         if (user is null)
-            throw new NullReferenceException();
-
-        var receiveMessage = new ReceiveMessageDto()
         {
-            Id = newMessage.Id,
-            Content = newMessage.Content,
+            var errorMessage = new ErrorMessageDto
+            {
+                ErrorCode = "USER_NOT_FOUND",
+                ErrorMessage = "User not found."
+            };
+
+            await Clients.Caller.SendAsync("ReceiveError", errorMessage);
+            return;
+        }
+
+        var receiveMessage = new ReceiveMessageDto
+        {
+            Id = result.Value.Id,
+            Content = result.Value.Content,
             OwnerUsername = user.Username,
-            Timestamp = newMessage.Timestamp,
+            Timestamp = result.Value.Timestamp,
             UserId = user.Id
         };
 
@@ -36,7 +56,7 @@ public class ChannelHub(IUserService userService, IMessageService messageService
     public async Task JoinChannel(Guid guildId, Guid channelId, Guid userId)
     {
         var user = await userService.GetById(userId);
-        var messageDto = new CreateMessageDto()
+        var messageDto = new CreateMessageDto
         {
             ChannelId = channelId,
             Content = $"O usuário {user.Username} entrou do chat",
@@ -45,10 +65,7 @@ public class ChannelHub(IUserService userService, IMessageService messageService
             UserId = user.Id
         };
 
-        if (!ConnectionGroups.ContainsKey(Context.ConnectionId))
-        {
-            ConnectionGroups[Context.ConnectionId] = [];
-        }
+        if (!ConnectionGroups.ContainsKey(Context.ConnectionId)) ConnectionGroups[Context.ConnectionId] = [];
 
         ConnectionGroups[Context.ConnectionId].Add(channelId.ToString());
 
@@ -63,7 +80,7 @@ public class ChannelHub(IUserService userService, IMessageService messageService
             ConnectionGroups[Context.ConnectionId].Contains(groupName))
         {
             var user = await userService.GetById(userId);
-            var messageDto = new CreateMessageDto()
+            var messageDto = new CreateMessageDto
             {
                 ChannelId = channelId,
                 Content = $"O usuário {user.Username} saiu do chat",
@@ -75,10 +92,7 @@ public class ChannelHub(IUserService userService, IMessageService messageService
             await Groups.RemoveFromGroupAsync(Context.ConnectionId, groupName);
             ConnectionGroups[Context.ConnectionId].Remove(groupName);
 
-            if (ConnectionGroups[Context.ConnectionId].Count == 0)
-            {
-                ConnectionGroups.Remove(Context.ConnectionId);
-            }
+            if (ConnectionGroups[Context.ConnectionId].Count == 0) ConnectionGroups.Remove(Context.ConnectionId);
 
             await SendMessage(messageDto);
         }

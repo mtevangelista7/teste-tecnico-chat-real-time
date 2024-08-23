@@ -1,15 +1,21 @@
 ﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 
-namespace TesteTecnicoDiscord.Client.Dialogs.Shared
+namespace TesteTecnicoDiscord.Client.Dialogs.Shared;
+
+public class ConfirmDialogBase : ComponentBase
 {
-    public class ConfirmDialogBase : ComponentBase
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
+
+    [Parameter] public string Message { get; set; } = string.Empty;
+
+    protected void Close()
     {
-        [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+        MudDialog.Close();
+    }
 
-        [Parameter] public string Message { get; set; } = string.Empty;
-
-        protected void Close() => MudDialog.Close();
-        protected void Cancel() => MudDialog.Cancel();
+    protected void Cancel()
+    {
+        MudDialog.Cancel();
     }
 }

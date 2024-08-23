@@ -7,103 +7,96 @@ using TesteTecnicoDiscord.Client.Helper;
 using TesteTecnicoDiscord.Client.RefitInterfaces;
 using TesteTecnicoDiscord.Client.States;
 
-namespace TesteTecnicoDiscord.Client.Pages
+namespace TesteTecnicoDiscord.Client.Pages;
+
+public class LoginBase : ComponentBaseExtends
 {
-    public class LoginBase : ComponentBaseExtends
+    private bool _isShow;
+    protected InputType PasswordInput = InputType.Password;
+    protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+
+    protected LoginUserDto UserDto = new() { Password = "", Username = "" };
+    [Inject] private IAuthEndpoints AuthEndpoints { get; set; }
+    [Inject] private ISnackbar Snackbar { get; set; }
+
+    protected override async Task OnInitializedAsync()
     {
-        [Inject] private IAuthEndpoints AuthEndpoints { get; set; }
-        [Inject] private ISnackbar Snackbar { get; set; }
-
-        protected LoginUserDto UserDto = new() { Password = "", Username = "" };
-        private bool _isShow;
-        protected InputType PasswordInput = InputType.Password;
-        protected string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
-
-        protected override async Task OnInitializedAsync()
+        try
         {
-            try
-            {
-                var authState = await AuthStateProvider
-                    .GetAuthenticationStateAsync();
+            var authState = await AuthStateProvider
+                .GetAuthenticationStateAsync();
 
-                var user = authState.User;
+            var user = authState.User;
 
-                if (user.Identity is not null && user.Identity.IsAuthenticated)
-                {
-                    NavigationManager.NavigateTo("/guilds");
-                }
-            }
-            catch (Exception ex)
-            {
-                await Help.HandleError(DialogService, ex, this);
-            }
+            if (user.Identity is not null && user.Identity.IsAuthenticated) NavigationManager.NavigateTo("/guilds");
         }
-
-        protected async Task HandleRegisterClickAsync()
+        catch (Exception ex)
         {
-            try
-            {
-                NavigationManager.NavigateTo("register");
-            }
-            catch (Exception ex)
-            {
-                await Help.HandleError(DialogService, ex, this);
-            }
+            await Help.HandleError(DialogService, ex, this);
         }
+    }
 
-        protected void ShowPassword()
+    protected async Task HandleRegisterClickAsync()
+    {
+        try
         {
-            if (_isShow)
-            {
-                _isShow = false;
-                PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
-                PasswordInput = InputType.Password;
-            }
-            else
-            {
-                _isShow = true;
-                PasswordInputIcon = Icons.Material.Filled.Visibility;
-                PasswordInput = InputType.Text;
-            }
+            NavigationManager.NavigateTo("register");
         }
-
-        protected async Task HandleLoginClickAsync(EditContext editContext)
+        catch (Exception ex)
         {
-            try
-            {
-                if (!editContext.Validate())
-                {
-                    return;
-                }
-
-                await LoginUserAsync(UserDto);
-
-                // go to channel page (?)
-                NavigationManager.NavigateTo("/Guilds");
-                Snackbar.Add("deu bom!", Severity.Success);
-            }
-            catch (Exception ex)
-            {
-                await Help.HandleError(DialogService, ex, this);
-            }
+            await Help.HandleError(DialogService, ex, this);
         }
+    }
 
-        private async Task LoginUserAsync(LoginUserDto loginUserDto)
+    protected void ShowPassword()
+    {
+        if (_isShow)
         {
-            try
-            {
-                var token = await AuthEndpoints.Login(loginUserDto);
+            _isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            _isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
 
-                if (string.IsNullOrWhiteSpace(token))
-                    throw new NullReferenceException();
+    protected async Task HandleLoginClickAsync(EditContext editContext)
+    {
+        try
+        {
+            if (!editContext.Validate()) return;
 
-                var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
-                await customAuthenticationStateProvider.UpdateAuthenticationStateAsync(token);
-            }
-            catch (Exception ex)
-            {
-                await Help.HandleError(DialogService, ex, this);
-            }
+            await LoginUserAsync(UserDto);
+
+            // go to channel page (?)
+            NavigationManager.NavigateTo("/Guilds");
+            Snackbar.Add("deu bom!", Severity.Success);
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
+        }
+    }
+
+    private async Task LoginUserAsync(LoginUserDto loginUserDto)
+    {
+        try
+        {
+            var token = await AuthEndpoints.Login(loginUserDto);
+
+            if (string.IsNullOrWhiteSpace(token))
+                throw new NullReferenceException();
+
+            var customAuthenticationStateProvider = (CustomAuthenticationStateProvider)AuthStateProvider;
+            await customAuthenticationStateProvider.UpdateAuthenticationStateAsync(token);
+        }
+        catch (Exception ex)
+        {
+            await Help.HandleError(DialogService, ex, this);
         }
     }
 }

@@ -27,7 +27,7 @@ public static class DependencyInjectionExtensions
         serviceCollection.AddScoped<IGuildsRepository, GuildsRepository>();
         serviceCollection.AddScoped<IChannelRepository, ChannelRepository>();
         serviceCollection.AddScoped<IMessageRepository, MessageRepository>();
-        serviceCollection.AddScoped(typeof(IRepository<>), typeof(EFRepository<>));
+        serviceCollection.AddScoped(typeof(IRepository<>), typeof(EfRepository<>));
         serviceCollection.AddScoped(typeof(IGenericService<>), typeof(GenericService<>));
 
         return serviceCollection;

@@ -1,11 +1,12 @@
-﻿using TesteTecnicoDiscord.Domain.Entities;
+﻿using FluentResults;
+using TesteTecnicoDiscord.Domain.Entities;
 using TesteTecnicoDiscord.Infra.Interfaces.Generic;
 
 namespace TesteTecnicoDiscord.Infra.Interfaces;
 
 public interface IMessageRepository : IRepository<Message>
 {
-    Task<List<Message>> GetAllByChannelId(Guid id);
-    Task<int> GetMessageCountFromUser(Guid userId);
-    new Task<Message> Add(Message message);
+    Task<Result<List<Message>>> GetAllByChannelId(Guid id);
+    Task<Result<int>> GetMessageCountFromUser(Guid userId);
+    new Task<Result<Message>> Add(Message message);
 }

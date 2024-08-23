@@ -1,5 +1,4 @@
-﻿using System.Threading.Channels;
-using Microsoft.AspNetCore.Components;
+﻿using Microsoft.AspNetCore.Components;
 using MudBlazor;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Client.CustomComponentBase;
@@ -12,17 +11,16 @@ namespace TesteTecnicoDiscord.Client.Pages;
 
 public class GuildChannelsBase : ComponentBaseExtends
 {
+    private List<GetChannelsDto> _channels = [];
+    private Guid _userId = Guid.Empty;
+    protected List<GetChannelsDto> FilteredChannels = [];
+    protected GetGuildsDto GuildMain = new();
+    protected bool Processing;
+
+    protected string Username = string.Empty;
     [Parameter] public Guid GuildId { get; set; }
     [Inject] private ISnackbar Snackbar { get; set; }
     [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
-
-    protected string Username = string.Empty;
-    protected bool Processing;
-    private Guid _userId = Guid.Empty;
-
-    private List<GetChannelsDto> _channels = [];
-    protected List<GetChannelsDto> FilteredChannels = [];
-    protected GetGuildsDto GuildMain = new();
 
     protected override async Task OnInitializedAsync()
     {
@@ -33,10 +31,7 @@ public class GuildChannelsBase : ComponentBaseExtends
 
             var user = authState.User;
 
-            if (user.Identity is null || !user.Identity.IsAuthenticated)
-            {
-                NavigationManager.NavigateTo("/login");
-            }
+            if (user.Identity is null || !user.Identity.IsAuthenticated) NavigationManager.NavigateTo("/login");
 
             Username = user.Claims.FirstOrDefault(claim => claim.Type == "unique_name").Value;
             _userId = Guid.Parse(user.Claims.FirstOrDefault(claim => claim.Type == "nameid").Value);

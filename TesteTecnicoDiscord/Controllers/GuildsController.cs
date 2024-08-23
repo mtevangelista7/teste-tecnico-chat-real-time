@@ -1,6 +1,5 @@
 ﻿using Mapster;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;
@@ -24,10 +23,7 @@ public class GuildsController(
             List<GetGuildsDto> listResponse = [];
             var listGuilds = await guildsService.GetAll();
 
-            if (listGuilds is { Count: > 0 })
-            {
-                listResponse = listGuilds.Adapt<List<GetGuildsDto>>();
-            }
+            if (listGuilds is { Count: > 0 }) listResponse = listGuilds.Adapt<List<GetGuildsDto>>();
 
             return Ok(listResponse);
         }
@@ -44,10 +40,7 @@ public class GuildsController(
         {
             var guild = await guildsService.GetById(guildId);
 
-            if (guild is null)
-            {
-                return BadRequest();
-            }
+            if (guild is null) return BadRequest();
 
             var guildResponse = guild.Adapt<GetGuildsDto>();
             return Ok(guildResponse);
@@ -91,6 +84,7 @@ public class GuildsController(
         }
     }
 
+    // todo: isso aqui precisa ser tratado
     [HttpGet("getChannels/{guildId:guid}")]
     public async Task<IActionResult> GetAllGuildsRoms(Guid guildId)
     {
@@ -99,10 +93,8 @@ public class GuildsController(
             List<GetChannelsDto> listResponse = [];
             var listChannels = await channelService.GetAllChannelsById(guildId);
 
-            if (listChannels is { Count: > 0 })
-            {
-                listResponse = listChannels.Adapt<List<GetChannelsDto>>();
-            }
+            // todo: isso aqui precisa ser tratado
+            if (listChannels.Value is { Count: > 0 }) listResponse = listChannels.Adapt<List<GetChannelsDto>>();
 
             return Ok(listResponse);
         }
@@ -145,6 +137,7 @@ public class GuildsController(
         }
     }
 
+    // TODO: tratar result
     [HttpGet("channels/{channelId:guid}/getMessages")]
     public async Task<IActionResult> GetMessagesFromChannel(Guid channelId)
     {
@@ -153,7 +146,8 @@ public class GuildsController(
             List<ReceiveMessageDto> receiveMessagesDto = [];
             var messages = await messageService.GetByChannelId(channelId);
 
-            if (messages is not { Count: > 0 }) return Ok(receiveMessagesDto);
+            // todo: isso aqui precisa ser tratado
+            if (messages.Value is not { Count: > 0 }) return Ok(receiveMessagesDto);
 
             receiveMessagesDto = messages.Adapt<List<ReceiveMessageDto>>();
             receiveMessagesDto.ForEach(async x => x.OwnerUsername = (await userService.GetById(x.UserId)).Username);

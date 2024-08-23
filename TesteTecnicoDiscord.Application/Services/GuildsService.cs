@@ -7,7 +7,7 @@ using TesteTecnicoDiscord.Infra.Interfaces.Generic;
 namespace TesteTecnicoDiscord.Application.Services;
 
 public class GuildsService(
-    IRepository<Guild> repository,
+    IRepository<Guild?> repository,
     IUserRepository userRepository,
     IGuildsRepository guildsRepository) : GenericService<Guild>(repository), IGuildsService
 {
@@ -18,7 +18,7 @@ public class GuildsService(
         if (user is null)
             return null!;
 
-        var guild = new Guild()
+        var guild = new Guild
         {
             Name = guildRequest.Name,
             MembersCount = 1,
@@ -26,8 +26,9 @@ public class GuildsService(
             OwnerUser = user
         };
 
+        // TODO: é preciso verificar se não deu falha aqui
         var newGuild = await guildsRepository.CreateNewGuild(guild);
-        return newGuild;
+        return newGuild.Value;
     }
 
     public async Task AddUserToGuild(Guid userId, Guid guildId)
@@ -37,6 +38,7 @@ public class GuildsService(
 
     public async Task<int> GetGuildCountFromUser(Guid userId)
     {
-        return await guildsRepository.GetGuildCountFromUser(userId);
+        // TODO: é preciso verificar se não deu falha aqui
+        return (await guildsRepository.GetGuildCountFromUser(userId)).Value;
     }
 }

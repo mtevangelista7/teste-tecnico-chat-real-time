@@ -14,11 +14,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Signika:wght@500&display=swap" rel="stylesheet">
     <link href="_content/MudBlazor/MudBlazor.min.css" rel="stylesheet"/>
-    <HeadOutlet @rendermode="new InteractiveWebAssemblyRenderMode(prerender: false)"/>
+    <HeadOutlet @rendermode="new InteractiveWebAssemblyRenderMode(false)"/>
 </head>
 
 <body>
-<Routes @rendermode="new InteractiveWebAssemblyRenderMode(prerender: false)"/>
+<Routes @rendermode="new InteractiveWebAssemblyRenderMode(false)"/>
 <script src="_framework/blazor.web.js"></script>
 <script src="js/real-time-chat.js"></script>
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>

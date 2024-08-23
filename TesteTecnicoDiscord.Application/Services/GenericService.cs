@@ -9,22 +9,32 @@ public class GenericService<T>(IRepository<T> repository) : IGenericService<T>
     {
         return await repository.GetAll();
     }
+
     public async Task<T> GetById(Guid id)
     {
+        if (id == Guid.Empty) throw new ArgumentException(nameof(id));
+
         return await repository.GetById(id);
     }
-    public async Task<T> Add(T entity)
+
+    public async Task<T> Add(T? entity)
     {
+        if (entity == null) throw new ArgumentException(nameof(entity));
+
         return await repository.Add(entity);
     }
 
-    public async Task<T> Update(T entity)
+    public async Task<T> Update(T? entity)
     {
+        if (entity == null) throw new ArgumentException(nameof(entity));
+
         return await repository.Update(entity);
     }
 
     public async Task Delete(Guid id)
     {
+        if (id == Guid.Empty) throw new ArgumentException(nameof(id));
+
         await repository.Delete(id);
     }
 }

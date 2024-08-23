@@ -1,7 +1,5 @@
-﻿using MudBlazor;
-using Refit;
+﻿using Refit;
 using TesteTecnicoDiscord.Application.Dtos;
-using TesteTecnicoDiscord.Domain.Entities;
 
 namespace TesteTecnicoDiscord.Client.RefitInterfaces;
 
@@ -36,8 +34,7 @@ public interface IGuildsEndpoints
 
     [Get("/{guildId}/{userId}/addUser")]
     public Task AddUserToGuild(Guid guildId, Guid userId);
-    
+
     [Get("/{channelId}/{userId}/addUserToChannel")]
     public Task AddUserToChannel(Guid channelId, Guid userId);
-
 }

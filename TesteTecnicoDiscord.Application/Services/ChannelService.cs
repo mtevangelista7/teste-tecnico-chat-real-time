@@ -1,41 +1,43 @@
-﻿using TesteTecnicoDiscord.Application.Dtos;
+﻿using FluentResults;
+using TesteTecnicoDiscord.Application.Dtos;
 using TesteTecnicoDiscord.Application.Interfaces.Services;
 using TesteTecnicoDiscord.Domain.Entities;
+using TesteTecnicoDiscord.Domain.Util;
 using TesteTecnicoDiscord.Infra.Interfaces;
 using TesteTecnicoDiscord.Infra.Interfaces.Generic;
 
 namespace TesteTecnicoDiscord.Application.Services;
 
 public class ChannelService(
-    IRepository<Channel> repository,
+    IRepository<Channel?> repository,
     IChannelRepository channelRepository,
     IGuildsRepository guildsRepository) : GenericService<Channel>(repository), IChannelService
 {
-    public async Task<List<Channel>> GetAllChannelsById(Guid guildId)
+    public async Task<Result<List<Channel>>> GetAllChannelsById(Guid guildId)
     {
-        return await channelRepository.GetAllChannelsById(guildId);
+        var result = await channelRepository.GetAllChannelsById(guildId);
+        return !result.IsSuccess ? result : result.Value;
     }
 
-    public async Task<Channel> CreateNewChannel(CreateChannelDto channelDto)
+    public async Task<Result<Channel>> CreateNewChannel(CreateChannelDto channelDto)
     {
-        Console.WriteLine(channelDto.GuildId);
-        var guild = await guildsRepository.GetById(channelDto.GuildId);
+        var result = await guildsRepository.GetById(channelDto.GuildId);
 
-        if (guild is null)
-            return null;
+        if (result is null)
+            return Result.Fail<Channel>(string.Format(Messages.Errors.GuildNotFound, channelDto.GuildId));
 
         var channel = new Channel
         {
             Name = channelDto.Name,
-            Guild = guild
+            Guild = result
         };
 
         await channelRepository.Add(channel);
         return channel;
     }
 
-    public async Task AddUserToChannel(Guid userId, Guid channelId)
+    public async Task<Result> AddUserToChannel(Guid userId, Guid channelId)
     {
-        await channelRepository.AddUserToChannel(userId, channelId);
+        return await channelRepository.AddUserToChannel(userId, channelId);
     }
 }

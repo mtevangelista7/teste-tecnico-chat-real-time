@@ -13,5 +13,4 @@ public interface IUserEndpoints
 
     [Get("/user/getGuildsCount/{userId}")]
     public Task<int> GetGuildCount(Guid userId);
-
 }

@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteTecnicoDiscord.Domain"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TesteTecnicoDiscord.Infra", "TesteTecnicoDiscord.Infra\TesteTecnicoDiscord.Infra.csproj", "{E9C0D530-A1A7-4920-8B65-C4149D180D88}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TesteTecnicoDiscord.Tests", "TesteTecnicoDiscord.Tests\TesteTecnicoDiscord.Tests.csproj", "{C47B6B1F-35EB-4438-AFED-6581D92D8E38}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{E9C0D530-A1A7-4920-8B65-C4149D180D88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E9C0D530-A1A7-4920-8B65-C4149D180D88}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E9C0D530-A1A7-4920-8B65-C4149D180D88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C47B6B1F-35EB-4438-AFED-6581D92D8E38}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C47B6B1F-35EB-4438-AFED-6581D92D8E38}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C47B6B1F-35EB-4438-AFED-6581D92D8E38}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C47B6B1F-35EB-4438-AFED-6581D92D8E38}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

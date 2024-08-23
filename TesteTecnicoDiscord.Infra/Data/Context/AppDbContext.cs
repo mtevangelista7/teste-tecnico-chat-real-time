@@ -12,12 +12,12 @@ public class AppDbContext(DbContextOptions<AppDbContext> options) : DbContext(op
     public DbSet<Channel> Channels { get; set; }
     public DbSet<GuildUser> GuildUsers { get; set; }
     public DbSet<ChannelUser> ChannelUsers { get; set; }
-    
+
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
     {
         optionsBuilder.AddInterceptors(new GuildSaveChangesInterceptor());
     }
-    
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         base.OnModelCreating(modelBuilder);

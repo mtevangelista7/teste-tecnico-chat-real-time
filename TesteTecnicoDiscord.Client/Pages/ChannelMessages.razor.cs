@@ -12,20 +12,26 @@ namespace TesteTecnicoDiscord.Client.Pages;
 
 public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
 {
+    private DotNetObjectReference<ChannelMessagesBase> _dotNetRef;
+
+    private HubConnection _hubConnection;
+    protected string ChannelName = string.Empty;
+    protected string CurrentUsername = string.Empty;
+    protected List<ReceiveMessageDto> ListMessages = [];
+
+    protected string MessageInput = string.Empty;
+    protected Guid UserId = Guid.Empty;
     [Parameter] public Guid GuildId { get; set; }
     [Parameter] public Guid ChannelId { get; set; }
 
     [Inject] private IGuildsEndpoints GuildsEndpoints { get; set; }
     [Inject] private IUserEndpoints UserEndpoints { get; set; }
 
-    protected string MessageInput = string.Empty;
-    protected List<ReceiveMessageDto> ListMessages = [];
-    protected string ChannelName = string.Empty;
-    protected string CurrentUsername = string.Empty;
-    protected Guid UserId = Guid.Empty;
-
-    private HubConnection _hubConnection;
-    private DotNetObjectReference<ChannelMessagesBase> _dotNetRef;
+    public void Dispose()
+    {
+        NavigationManager.LocationChanged -= HandleLocationChanged;
+        DisposeAsync();
+    }
 
     protected override async Task OnInitializedAsync()
     {
@@ -61,10 +67,7 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
 
     protected override void OnAfterRender(bool firstRender)
     {
-        if (firstRender)
-        {
-            _dotNetRef = DotNetObjectReference.Create(this);
-        }
+        if (firstRender) _dotNetRef = DotNetObjectReference.Create(this);
     }
 
     private async Task OpenConnection()
@@ -73,12 +76,19 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
             .WithUrl(NavigationManager.ToAbsoluteUri("/channelHub"))
             .Build();
 
-        _hubConnection.On<ReceiveMessageDto>("ReceiveMessage", async (message) =>
+        _hubConnection.On<ReceiveMessageDto>("ReceiveMessage", async message =>
         {
             ListMessages.Add(message);
             StateHasChanged();
 
             await JSRuntime.InvokeVoidAsync("scrollToBottom", "scrollablePaper");
+        });
+
+        _hubConnection.On<ErrorMessageDto>("ReceiveError", async (error) =>
+        {
+            await Help.ShowAlertDialog(DialogService, error.ErrorMessage);
+            NavigationManager.NavigateTo($"/Guilds/{GuildId}");
+            return;
         });
 
         await _hubConnection.StartAsync();
@@ -98,7 +108,7 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
             // send the message to the hub
             if (!string.IsNullOrEmpty(MessageInput))
             {
-                var createMessageDto = new CreateMessageDto()
+                var createMessageDto = new CreateMessageDto
                 {
                     ChannelId = ChannelId,
                     Content = MessageInput,
@@ -131,12 +141,6 @@ public class ChannelMessagesBase : ComponentBaseExtends, IDisposable
     private async Task OnPageExit()
     {
         await _hubConnection.SendAsync("LeaveChannel", GuildId, ChannelId, UserId);
-    }
-
-    public void Dispose()
-    {
-        NavigationManager.LocationChanged -= HandleLocationChanged;
-        DisposeAsync();
     }
 
     private async void DisposeAsync()

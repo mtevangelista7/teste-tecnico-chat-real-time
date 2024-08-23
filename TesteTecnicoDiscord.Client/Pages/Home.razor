@@ -1,9 +1,9 @@
 ﻿@page "/"
+@using Microsoft.AspNetCore.Components.Authorization
+@using TesteTecnicoDiscord.Client.Helper
 @inject NavigationManager NavigationManager
 @inject IDialogService DialogService
 @inject AuthenticationStateProvider AuthStateProvider
-@using Microsoft.AspNetCore.Components.Authorization
-@using TesteTecnicoDiscord.Client.Helper
 
 @code {
 
@@ -30,4 +30,5 @@
             await Help.HandleError(DialogService, ex, this);
         }
     }
+
 }

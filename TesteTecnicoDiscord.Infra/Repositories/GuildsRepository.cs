@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using FluentResults;
+using Microsoft.EntityFrameworkCore;
 using TesteTecnicoDiscord.Domain.Entities;
 using TesteTecnicoDiscord.Infra.Data.Context;
 using TesteTecnicoDiscord.Infra.Interfaces;
@@ -6,9 +7,9 @@ using TesteTecnicoDiscord.Infra.Repositories.Generic;
 
 namespace TesteTecnicoDiscord.Infra.Repositories;
 
-public class GuildsRepository(AppDbContext context) : EFRepository<Guild>(context), IGuildsRepository
+public class GuildsRepository(AppDbContext context) : EfRepository<Guild>(context), IGuildsRepository
 {
-    public async Task<Guild> CreateNewGuild(Guild guild)
+    public async Task<Result<Guild>> CreateNewGuild(Guild guild)
     {
         await using var transaction = await context.Database.BeginTransactionAsync();
 
@@ -21,20 +22,17 @@ public class GuildsRepository(AppDbContext context) : EFRepository<Guild>(contex
         await context.SaveChangesAsync();
 
         await transaction.CommitAsync();
-        return guild;
+        return Result.Ok(guild);
     }
 
-    public async Task AddUserToGuild(Guid userId, Guid guildId)
+    public async Task<Result> AddUserToGuild(Guid userId, Guid guildId)
     {
         await using var transaction = await context.Database.BeginTransactionAsync();
 
         var user = await context.Users.FindAsync(userId);
         var guild = context.Guilds.Include(g => g.GuildUsers).FirstOrDefault(g => g.Id == guildId);
 
-        if (user == null || guild == null)
-        {
-            throw new Exception("User or Guild not found");
-        }
+        if (user == null || guild == null) throw new Exception("User or Guild not found");
 
         var isUserInGuild = guild.GuildUsers.Any(gu => gu.UserId == userId);
 
@@ -47,10 +45,11 @@ public class GuildsRepository(AppDbContext context) : EFRepository<Guild>(contex
         }
 
         await transaction.CommitAsync();
+        return Result.Ok();
     }
 
-    public async Task<int> GetGuildCountFromUser(Guid userId)
+    public async Task<Result<int>> GetGuildCountFromUser(Guid userId)
     {
-        return await context.Guilds.CountAsync(x => x.OwnerUser.Id == userId);
+        return Result.Ok(await context.Guilds.CountAsync(x => x.OwnerUser.Id == userId));
     }
 }

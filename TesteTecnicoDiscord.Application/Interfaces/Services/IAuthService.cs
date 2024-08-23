@@ -1,9 +1,10 @@
-﻿using TesteTecnicoDiscord.Application.Dtos;
+﻿using FluentResults;
+using TesteTecnicoDiscord.Application.Dtos;
 
 namespace TesteTecnicoDiscord.Application.Interfaces.Services;
 
 public interface IAuthService
 {
-    Task<string> Register(CreateUserDto request);
-    Task<string> Login(LoginUserDto request);
+    Task<Result<string>> Register(CreateUserDto request);
+    Task<Result<string>> Login(LoginUserDto request);
 }

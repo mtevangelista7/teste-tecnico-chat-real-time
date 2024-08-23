@@ -9,7 +9,7 @@
     <div>
         <div class="bgimage">
 
-            <MudAppBar Class="slide-in-bottom"  Elevation="10" Color="Color.Transparent" Fixed="false" Dense="true">
+            <MudAppBar Class="slide-in-bottom" Elevation="10" Color="Color.Transparent" Fixed="false" Dense="true">
 
                 <MudStack AlignItems="AlignItems.Center" Row="true">
 
@@ -31,7 +31,7 @@
                             <b>@Username</b>
                         </MudText>
                     </MudButton>
-                    
+
                     <MudIconButton OnClick="LogOutUser" Icon="@Icons.Material.Filled.Logout" Color="Color.Dark"/>
                 </MudStack>
 
@@ -63,7 +63,7 @@
                                                           AdornmentIcon="@Icons.Material.Filled.Search"
                                                           AdornmentColor="Color.Tertiary"
                                                           Immediate="true"
-                                                          ValueChanged="e => FilterChannels(e)" />
+                                                          ValueChanged="e => FilterChannels(e)"/>
 
                                             <MudButton Disabled="@Processing" Class="rounded-xl" OnClick="OnClickAddNewChannel" Size="Size.Large" Variant="Variant.Filled" Color="Color.Success">
                                                 @if (Processing)

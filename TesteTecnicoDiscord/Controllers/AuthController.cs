@@ -9,30 +9,38 @@ namespace TesteTecnicoDiscord.Controllers;
 public class AuthController(IAuthService authService) : ControllerBase
 {
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] CreateUserDto request)
+    public async Task<IResult> Register([FromBody] CreateUserDto request)
     {
         try
         {
-            var token = await authService.Register(request);
-            return string.IsNullOrWhiteSpace(token) ? BadRequest() : Ok(token);
+            var result = await authService.Register(request);
+
+            if (!result.IsSuccess)
+                return Results.BadRequest(result.Errors.First().Message);
+
+            return string.IsNullOrWhiteSpace(result.Value) ? Results.BadRequest() : Results.Ok(result);
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Results.BadRequest(ex.Message);
         }
     }
 
     [HttpPost("login")]
-    public async Task<IActionResult> Login([FromBody] LoginUserDto request)
+    public async Task<IResult> Login([FromBody] LoginUserDto request)
     {
         try
         {
-            var token = await authService.Login(request);
-            return string.IsNullOrWhiteSpace(token) ? BadRequest() : Ok(token);
+            var result = await authService.Login(request);
+
+            if (!result.IsSuccess)
+                return Results.BadRequest(result.Errors.First().Message);
+
+            return string.IsNullOrWhiteSpace(result.Value) ? Results.BadRequest() : Results.Ok(result);
         }
         catch (Exception ex)
         {
-            return BadRequest(ex.Message);
+            return Results.BadRequest(ex.Message);
         }
     }
 }

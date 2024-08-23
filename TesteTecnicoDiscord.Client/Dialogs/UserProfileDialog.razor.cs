@@ -9,12 +9,12 @@ namespace TesteTecnicoDiscord.Client.Dialogs;
 
 public class UserProfileDialogBase : ComponentBaseExtends
 {
-    [Inject] private IUserEndpoints UserEndpoints { get; set; }
-    [CascadingParameter] MudDialogInstance MudDialog { get; set; }
+    protected int GuildsCount;
+    protected int MessagesCount;
 
     protected GetUserDto User = new();
-    protected int MessagesCount;
-    protected int GuildsCount;
+    [Inject] private IUserEndpoints UserEndpoints { get; set; }
+    [CascadingParameter] private MudDialogInstance MudDialog { get; set; }
 
     protected override async Task OnInitializedAsync()
     {
